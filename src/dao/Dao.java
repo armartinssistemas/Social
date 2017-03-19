@@ -5,7 +5,9 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.lang.Class;
+import java.util.Collections;
 import javax.persistence.Entity;
+import model.Ambulatorio;
 
 /**
  *
@@ -56,17 +58,17 @@ public abstract class Dao<T> {
         }        
     }
     
-    public T getById(Long Id){
+    public T getById(Class<T> clazz, Long Id){
         Transaction transaction = session.beginTransaction();
-        T obj = (T) session.load(getClass(), Id);  
+        T obj = (T) session.get(clazz, Id);
         transaction.commit();
         return obj;
     }
     
-    public List<T> listar(){
+    public List<T> listar(Class<T> clazz){
         Transaction transaction = session.beginTransaction();
         try{
-          List<T> lista = session.createCriteria(getClass()).list();
+          List<T> lista = session.createCriteria(clazz).list();
           transaction.commit();
           return lista;
         }catch(Exception e){

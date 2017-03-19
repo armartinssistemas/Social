@@ -22,7 +22,7 @@ import model.medicinatrabalho.GuiaMedicinaTrabalho;
  */
 @Entity
 @Table(name = "fornecedores",catalog = "TEOR")
-public class FornecedorCana {
+public class FornecedorCana implements Comparable<FornecedorCana>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int IDFornecedor;
@@ -88,5 +88,10 @@ public class FornecedorCana {
 
     public void setGuiasMedicinaTrabalho(List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho) {
         this.guiasMedicinaTrabalho = guiasMedicinaTrabalho;
+    }
+
+    @Override
+    public int compareTo(FornecedorCana o) {
+        return this.Nome.compareTo(o.getNome());
     }
 }

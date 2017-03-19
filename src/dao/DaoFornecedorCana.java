@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.FornecedorCana;
 import org.hibernate.Session;
 
@@ -21,5 +22,15 @@ public class DaoFornecedorCana extends Dao<FornecedorCana>{
     public DaoFornecedorCana(){
         super();
     }
+
+    public FornecedorCana getById(Long Id) {
+        return super.getById(FornecedorCana.class, Id); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public List<FornecedorCana> listar() {
+        return super.listar(FornecedorCana.class); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
     
 }

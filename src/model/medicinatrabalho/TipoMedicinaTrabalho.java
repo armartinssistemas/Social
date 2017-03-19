@@ -19,8 +19,8 @@ import javax.persistence.Table;
  * @author ronaldo
  */
 @Entity
-@Table(name = "",catalog = "TEOR")
-public class TipoMedicinaTrabalho {
+@Table(name = "tipo_medicina_trabalho",catalog = "TEOR")
+public class TipoMedicinaTrabalho implements Comparable<TipoMedicinaTrabalho>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -54,4 +54,16 @@ public class TipoMedicinaTrabalho {
     public void setGuiasMedicinaTrabalho(List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho) {
         this.guiasMedicinaTrabalho = guiasMedicinaTrabalho;
     }
+
+    @Override
+    public String toString() {
+        return this.descricao;
+    }
+
+    @Override
+    public int compareTo(TipoMedicinaTrabalho o) {
+        return this.descricao.compareTo(o.getDescricao());
+    }
+    
+    
 }

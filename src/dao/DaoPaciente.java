@@ -5,6 +5,7 @@
  */
 package dao;
 
+import java.util.List;
 import model.Paciente;
 import org.hibernate.Session;
 
@@ -21,4 +22,15 @@ public class DaoPaciente extends Dao<Paciente>{
     public DaoPaciente(){
         super();
     }
+
+    
+    public Paciente getById(Long Id) {
+        return super.getById(Paciente.class, Id);
+    }
+
+    public List<Paciente> listar() {
+        return super.listar(Paciente.class); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

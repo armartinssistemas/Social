@@ -5,9 +5,15 @@
  */
 package view;
 
+import dao.DaoAmbulatorio;
 import dao.permissao.DaoUsuario;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import model.Ambulatorio;
+import model.permissao.Usuario;
 
 /**
  *
@@ -20,6 +26,11 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        DaoAmbulatorio daoAmbulatorio = new DaoAmbulatorio();
+        List<Ambulatorio> ambulatorios = daoAmbulatorio.listar();
+        Collections.sort(ambulatorios);
+        ambulatorios.add(0, null);
+        textAmbulatorios.setModel(new DefaultComboBoxModel(ambulatorios.toArray()));
     }
 
     /**
@@ -39,7 +50,7 @@ public class Login extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        textAmbulatorios = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MEDICINA DO TRABALHO");
@@ -48,6 +59,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel1.setText("Usuário:");
 
+        TextLogin.setText("admin");
         TextLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TextLoginActionPerformed(evt);
@@ -55,6 +67,8 @@ public class Login extends javax.swing.JFrame {
         });
 
         jLabel2.setText("Senha:");
+
+        TextSenha.setText("assoccanamartins");
 
         jLabel4.setText("Ambulatorio");
 
@@ -94,6 +108,11 @@ public class Login extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButton1KeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,7 +130,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton1)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textAmbulatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(82, 82, 82))))
         );
         layout.setVerticalGroup(
@@ -122,7 +141,7 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textAmbulatorios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton1)
                 .addContainerGap(36, Short.MAX_VALUE))
@@ -137,18 +156,14 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_TextLoginActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        DaoUsuario daoUsuario = new DaoUsuario();
-        boolean login = daoUsuario.login(TextLogin.getText().trim(), TextSenha.getText().trim());
-        if (login){
-            Principal principal = new Principal();
-            principal.setVisible(true);
-            principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            dispose();
-        }else{
-            JOptionPane.showMessageDialog(null, "Acesso Negado!");
-        }
-        
+        botaoLogin();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER){
+            botaoLogin();
+        }
+    }//GEN-LAST:event_jButton1KeyPressed
         
         
     
@@ -188,11 +203,30 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField TextLogin;
     private javax.swing.JPasswordField TextSenha;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> textAmbulatorios;
     // End of variables declaration//GEN-END:variables
+
+    public void botaoLogin(){
+        if (textAmbulatorios.getSelectedItem()==null){
+           JOptionPane.showMessageDialog(null, "Inforrme o Ambulatório");
+        }else{
+            DaoUsuario daoUsuario = new DaoUsuario();
+            Usuario usuario = daoUsuario.login(TextLogin.getText().trim(), TextSenha.getText().trim());
+            if (usuario != null){
+                DadosGlobais.ambulatorio = (Ambulatorio) textAmbulatorios.getSelectedItem();
+                DadosGlobais.usuarioLogado = usuario;
+                Principal principal = new Principal();
+                principal.setVisible(true);
+                principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                dispose();
+            }else{
+                JOptionPane.showMessageDialog(null, "Acesso Negado!");
+            }
+        }
+    }
 }

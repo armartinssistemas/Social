@@ -6,6 +6,7 @@
 package dao.permissao;
 
 import dao.Dao;
+import java.util.List;
 import model.permissao.Usuario;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -25,23 +26,33 @@ public class DaoUsuario extends Dao<Usuario>{
         super();
     }
     
-    public  boolean login(String usuario, String senha){
-        boolean retorno = false;
+    public  Usuario login(String usuario, String senha){
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
+        Object obj = null;
         try{
-            Object obj = 
+            obj = 
             session.createQuery("from Usuario u where u.login = :login and u.senha = :senha")
                   .setParameter("login", usuario)
                   .setParameter("senha", senha)
                   .uniqueResult();
-            retorno = obj != null;
+            
             transaction.commit();
         }catch(Exception e){
           transaction.rollback();
           throw e;
         }finally{
-            return retorno;
+            return (Usuario) obj;
         }
     }
+    
+    public List<Usuario> listar() {
+        return super.listar(Usuario.class); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Usuario getById(Long Id) {
+        return super.getById(Usuario.class, Id); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

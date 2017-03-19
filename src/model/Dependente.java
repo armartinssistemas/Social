@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 public class Dependente extends Paciente{
     
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "titular", referencedColumnName = "id")
+    @JoinColumn(name = "titular")
     private Titular titular;
 
     public Titular getTitular() {

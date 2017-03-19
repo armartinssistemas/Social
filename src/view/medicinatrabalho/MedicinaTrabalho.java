@@ -5,6 +5,19 @@
  */
 package view.medicinatrabalho;
 
+import dao.DaoPaciente;
+import dao.medicinatrabalho.DaoTipoMedicinaTrabalho;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import model.Paciente;
+import model.medicinatrabalho.TipoMedicinaTrabalho;
+import view.DadosGlobais;
+
 /**
  *
  * @author Ronaldo
@@ -16,34 +29,81 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
      */
     
     public void modoNaoEdicao(){
-        TextID.setEnabled(false);
-        //TextData.setEnabled(false);
+        TextID.setEnabled(true);
+        TextData.setEnabled(false);
         TextAMBULATORIO.setEnabled(false);
-        TextTipoMedicina.setEnabled(true);
+        TextTipoMedicina.setEnabled(false);
+        TextIDPACIENTE.setEnabled(false);
         
         btNovo.setEnabled(true);
         btSalvar.setEnabled(false);
         btCancelar.setEnabled(false);
         btExcluir.setEnabled(false);
         btEditar.setEnabled(true);
+        
+        TextPaciente.setEnabled(false);
+        TextNasc.setEnabled(false);
+        TextRG.setEnabled(false);
+        TextCARTEIRADETRABPACIETE.setEnabled(false);
+        TextSCartProfiss.setEnabled(false);
+        TextIDFORNECEDOR.setEnabled(false);
+        TextFornecedor.setEnabled(false);
+        
+        
     }
     
     public void modoEdicao(){
-        TextID.setEnabled(true);
-        //TextData.setEnabled(true);
-        TextAMBULATORIO.setEnabled(true);
+        TextID.setEnabled(false);
+        TextData.setEnabled(true);
+        TextAMBULATORIO.setEnabled(false);
         TextTipoMedicina.setEnabled(true);
+        TextIDPACIENTE.setEnabled(true);
         
         btNovo.setEnabled(false);
         btSalvar.setEnabled(true);
         btCancelar.setEnabled(true);
         btExcluir.setEnabled(true);
         btEditar.setEnabled(false);
+        
+        TextPaciente.setEnabled(false);
+        TextNasc.setEnabled(false);
+        TextRG.setEnabled(false);
+        TextCARTEIRADETRABPACIETE.setEnabled(false);
+        TextSCartProfiss.setEnabled(false);
+        TextIDFORNECEDOR.setEnabled(false);
+        TextFornecedor.setEnabled(false);
+    }
+    
+    public void limpar(){
+        TextID.setText("");
+        TextData.setDate(null);
+        TextAMBULATORIO.setText("");
+        TextTipoMedicina.setSelectedIndex(0);
+        limparPaciente();
+        TextIDPACIENTE.setText(""); 
+    }
+    
+    public void limparPaciente(){ 
+        TextPaciente.setText("");
+        TextNasc.setText("");
+        TextRG.setText("");
+        TextCARTEIRADETRABPACIETE.setText("");
+        TextSCartProfiss.setText("");
+        TextIDFORNECEDOR.setText("");
+        TextFornecedor.setText("");
     }
     
     public MedicinaTrabalho() {
         initComponents();
         modoNaoEdicao();
+        
+        //Carrega a lista de tipo de medicina do trabalho
+        DaoTipoMedicinaTrabalho daoTipoMedicinaTrabalho = new DaoTipoMedicinaTrabalho();
+        List<TipoMedicinaTrabalho> tipos = daoTipoMedicinaTrabalho.listar();
+        //Ordena em Ordem Alfabética
+        Collections.sort(tipos);
+        tipos.add(0, null);
+        TextTipoMedicina.setModel(new DefaultComboBoxModel(tipos.toArray()));
     }
 
     /**
@@ -91,7 +151,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         btImprimir = new javax.swing.JButton();
         btEmitirRelatório = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        TextData = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -138,6 +198,19 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("PACIENTE");
+
+        TextIDPACIENTE.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                TextIDPACIENTEInputMethodTextChanged(evt);
+            }
+        });
+        TextIDPACIENTE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TextIDPACIENTEKeyPressed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("NASCIMENTO");
@@ -314,6 +387,11 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
         btExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/170317123944_64.png"))); // NOI18N
         btExcluir.setToolTipText("EXCLUIR");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -325,18 +403,18 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
+                            .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel1)
+                                        .addComponent(TextID, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(TextData, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addComponent(TextAMBULATORIO, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(TextTipoMedicina, javax.swing.GroupLayout.Alignment.LEADING, 0, 377, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(TextID, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(29, 29, 29)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel3)))
+                                .addComponent(TextTipoMedicina, javax.swing.GroupLayout.Alignment.LEADING, 0, 377, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(btNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,7 +445,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TextID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(TextData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -522,7 +600,16 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
-        modoNaoEdicao();
+        if (TextData.getDate()  == null){
+            JOptionPane.showMessageDialog(null, "Informe a Data");
+        }else if (TextTipoMedicina.getSelectedItem() == null){
+            JOptionPane.showMessageDialog(null, "Informe o Tipo de Medicina do Trabalho");
+        }else if (TextPaciente.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Informe o Paciente");
+        }else{
+            modoNaoEdicao();
+            limpar();
+        }
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void TextAMBULATORIOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextAMBULATORIOActionPerformed
@@ -539,20 +626,58 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
        modoEdicao();
+       TextData.setDate(new Date());
+       TextID.setText("NOVO");
+       TextAMBULATORIO.setText(DadosGlobais.ambulatorio.getDescricao());
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         modoNaoEdicao();
+        limpar();
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
         modoEdicao();
     }//GEN-LAST:event_btEditarActionPerformed
 
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        limpar();
+    }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void TextIDPACIENTEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDPACIENTEKeyPressed
+        if(evt.getKeyCode() == evt.VK_ENTER) {
+            if (!TextIDPACIENTE.equals("")){
+                DaoPaciente daoPaciente = new DaoPaciente();
+                Paciente p = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
+                if (p!=null){
+                    TextPaciente.setText(p.getNome());
+                    TextRG.setText(p.getRg());
+                    TextFornecedor.setText(p.getFornecedorCana().getNome());
+                    TextIDFORNECEDOR.setText(p.getFornecedorCana().getIDFornecedor()+"");
+                    TextNasc.setText(new SimpleDateFormat("dd/mm/yyyy").format(p.getDataNacimento()));
+                    TextCARTEIRADETRABPACIETE.setText(p.getNumeroCarteiraTrabalho());
+                    TextSCartProfiss.setText(p.getSerieCateiraTrabalho());
+                }else{
+                    JOptionPane.showMessageDialog(null, "Paciente não encontrado");
+                }
+                
+            }
+        }else if(evt.getKeyCode() == evt.VK_F2) {
+            JOptionPane.showMessageDialog(null, "Teste");
+        }else{
+            limparPaciente();
+        }
+    }//GEN-LAST:event_TextIDPACIENTEKeyPressed
+
+    private void TextIDPACIENTEInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_TextIDPACIENTEInputMethodTextChanged
+        
+    }//GEN-LAST:event_TextIDPACIENTEInputMethodTextChanged
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TextAMBULATORIO;
     private javax.swing.JTextField TextCARTEIRADETRABPACIETE;
+    private com.toedter.calendar.JDateChooser TextData;
     private javax.swing.JTextField TextFornecedor;
     private javax.swing.JTextField TextID;
     private javax.swing.JTextField TextIDFORNECEDOR;
@@ -571,7 +696,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSalvar;
     private javax.swing.JButton jButton1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

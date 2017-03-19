@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import model.Ambulatorio;
 import model.FornecedorCana;
 import model.Paciente;
+import model.permissao.Usuario;
 
 /**
  *
@@ -22,53 +23,37 @@ import model.Paciente;
  */
 @Entity
 @Table(name = "guia_medicina_trabalho", catalog = "TEOR")
-public class GuiaMedicinaTrabalho {
+public class GuiaMedicinaTrabalho implements Comparable<GuiaMedicinaTrabalho>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "ambulatorio", referencedColumnName = "id")
+    @JoinColumn(name = "ambulatorio")
     private Ambulatorio ambulatorio;
     
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "tipo_exame", referencedColumnName = "id")
+    @JoinColumn(name = "tipo_exame")
     private TipoMedicinaTrabalho tipoMedicinaTrabalho;
     
-    private Date data_cad;
-    
-    private Date hora_cad;
-    
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "paciente", referencedColumnName = "id")
+    @JoinColumn(name = "paciente")
     private Paciente paciente;
 
     @ManyToOne(optional = false)
-    @JoinColumn(columnDefinition = "fornecedor_cana", referencedColumnName = "IDFornecedor")    
+    @JoinColumn(name = "fornecedor_cana")    
     private FornecedorCana fornecedorCana;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_cad") 
+    private Usuario usuarioCadastro;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Date getData_cad() {
-        return data_cad;
-    }
-
-    public void setData_cad(Date data_cad) {
-        this.data_cad = data_cad;
-    }
-
-    public Date getHora_cad() {
-        return hora_cad;
-    }
-
-    public void setHora_cad(Date hora_cad) {
-        this.hora_cad = hora_cad;
     }
 
     public Ambulatorio getAmbulatorio() {
@@ -101,5 +86,18 @@ public class GuiaMedicinaTrabalho {
 
     public void setFornecedorCana(FornecedorCana fornecedorCana) {
         this.fornecedorCana = fornecedorCana;
+    }
+
+    public Usuario getUsuarioCadastro() {
+        return usuarioCadastro;
+    }
+
+    public void setUsuarioCadastro(Usuario usuarioCadastro) {
+        this.usuarioCadastro = usuarioCadastro;
+    }
+
+    @Override
+    public int compareTo(GuiaMedicinaTrabalho o) {
+        return this.id.compareTo(o.getId());
     }
 }

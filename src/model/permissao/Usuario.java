@@ -6,11 +6,14 @@
 package model.permissao;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import model.medicinatrabalho.GuiaMedicinaTrabalho;
 
 /**
  *
@@ -18,7 +21,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "usuarios_teor", catalog = "TEOR")
-public class Usuario {
+public class Usuario implements Comparable<Usuario>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,6 +35,8 @@ public class Usuario {
     //private Usuario usercad;
     private Date dataupdate;
     //private Usuario userupdate;
+    @OneToMany(mappedBy = "usuarioCadastro")
+    private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
 
     public Long getId() {
         return id;
@@ -103,6 +108,19 @@ public class Usuario {
 
     public void setDataupdate(Date dataupdate) {
         this.dataupdate = dataupdate;
+    }
+
+    public List<GuiaMedicinaTrabalho> getGuiasMedicinaTrabalho() {
+        return guiasMedicinaTrabalho;
+    }
+
+    public void setGuiasMedicinaTrabalho(List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho) {
+        this.guiasMedicinaTrabalho = guiasMedicinaTrabalho;
+    }
+
+    @Override
+    public int compareTo(Usuario o) {
+        return this.nome.compareTo(o.getNome());
     }
     
     
