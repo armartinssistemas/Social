@@ -9,12 +9,15 @@ import dao.DaoFornecedorCana;
 import dao.DaoPaciente;
 import dao.medicinatrabalho.DaoGuiMedicinaTrabalho;
 import dao.medicinatrabalho.DaoTipoMedicinaTrabalho;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
@@ -27,6 +30,15 @@ import model.FornecedorCana;
 import model.Paciente;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
 import model.medicinatrabalho.TipoMedicinaTrabalho;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.swing.JRViewer;
 import view.DadosGlobais;
 import view.paciente.PesquisaPaciente;
 import view.paciente.PesquisaPaciente;
@@ -322,7 +334,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel14.setText("FORNECEDOR");
 
-        btPesqPaciente.setBackground(new java.awt.Color(0, 204, 204));
+        btPesqPaciente.setBackground(new java.awt.Color(239, 239, 239));
         btPesqPaciente.setForeground(new java.awt.Color(0, 204, 204));
         btPesqPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisar.png"))); // NOI18N
         btPesqPaciente.setBorderPainted(false);
@@ -370,8 +382,8 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                                     .addComponent(jLabel13)
                                     .addComponent(TextFornecedor, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(btPesqPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btPesqPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(TextIDPACIENTE, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel6))
@@ -388,17 +400,18 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
                 .addComponent(jLabel5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addGap(6, 6, 6)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(TextIDPACIENTE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(TextPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(TextIDPACIENTE, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                            .addComponent(TextPaciente)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btPesqPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -466,6 +479,11 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
         btImprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/imprimir.png"))); // NOI18N
         btImprimir.setToolTipText("IMPRIMIR RELATÓRIO");
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
 
         btEmitirRelatório.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/excluirr.png"))); // NOI18N
         btEmitirRelatório.setToolTipText("EMITIR RELATÓRIO ALTERANDO NOME");
@@ -609,8 +627,9 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(TextPesquisa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
@@ -621,8 +640,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(radioData))
                             .addComponent(jLabel16))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addContainerGap(311, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -887,6 +905,40 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             PreencherPaciente(p);
         }
     }//GEN-LAST:event_btPesqPacienteActionPerformed
+
+    private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
+        try {
+            //InputStream stream = this.getClass().getResourceAsStream("/relatorios/guia.jasper");
+            //InputStream stream = this.getClass().getResourceAsStream("C:\\AFCRC\\SOCIAL\\Social\\src\\relatorios\\medicinatrabalho\\guia.jasper");
+            Map<String,Object> params = new HashMap<String,Object>();
+            params.put("empregador", "TESTE");
+            params.put("municipio","TESTE");
+            params.put("tipoexame","tipoexame");
+            params.put("prontuario","prontuario");
+            params.put("nome","nome");
+            params.put("datanascimento","datanascimento");
+            params.put("idade","idade");
+            params.put("rg","rg");
+            params.put("carteira","carteira");
+            params.put("serie","serie");
+            params.put("funcao","funcao");
+            
+            //JasperReport report = (JasperReport) JRLoader.loadObject(stream);
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(getClass().getResource("/relatorios/medicinatrabalho/guia.jasper"));
+            //JasperPrint print = JasperFillManager.fillReport(report,params);
+            JasperPrint print = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
+            
+            JRViewer viewer = new JRViewer(print);
+            viewer.setVisible(true);
+            
+            /*JRPdfExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, outFile);
+            exporter.exportReport();*/
+        } catch (JRException ex) {
+            Logger.getLogger(MedicinaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btImprimirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

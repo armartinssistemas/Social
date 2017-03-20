@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55707468-9438-4fb1-a42e-0b591a4acb83">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="242"/>
+	<parameter name="empregador" class="java.lang.String"/>
+	<parameter name="municipio" class="java.lang.String"/>
+	<parameter name="tipoexame" class="java.lang.String"/>
+	<parameter name="prontuario" class="java.lang.String"/>
+	<parameter name="nome" class="java.lang.String"/>
+	<parameter name="datanascimento" class="java.lang.String"/>
+	<parameter name="idade" class="java.lang.String"/>
+	<parameter name="rg" class="java.lang.String"/>
+	<parameter name="carteira" class="java.lang.String"/>
+	<parameter name="serie" class="java.lang.String"/>
+	<parameter name="funcao" class="java.lang.String"/>
+	<parameter name="exames" class="java.lang.String"/>
+	<parameter name="agentesagressores" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="802" splitType="Stretch">
+			<image>
+				<reportElement x="13" y="12" width="63" height="78" uuid="443d362a-69db-4ba0-85af-a4d5a7854a4a"/>
+				<imageExpression><![CDATA["C:\\AFCRC\\novo-logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="76" y="12" width="464" height="25" uuid="1f3230ee-ab95-4ad4-9cd8-8b1a42e617c1"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Associação dos Fornecedores de Cana da Região de Catanduva]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="94" width="555" height="1" uuid="4dbe0a41-1f88-4f6e-a29c-d5c8772ef0a3"/>
+			</line>
+			<staticText>
+				<reportElement x="76" y="41" width="464" height="20" uuid="034a9f96-b957-4aca-8415-67db03e9d4b6"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rua Antonio Girol, 150 - Catanduva S.P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="67" width="464" height="20" uuid="13c2eba4-7640-4ce8-aa7c-32fe2177dee1"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telefone: (17) 3524-9422]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="98" width="555" height="20" uuid="5e6bd480-ed7a-4888-b4c1-a36cf5ca4c1e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ATESTADO DE SAÚDE OCUPACIONAL (ASO)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="234" width="80" height="20" uuid="464f1669-4e87-4581-b6e3-4e28511fe060"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Empregador:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="336" y="234" width="61" height="20" uuid="0f91367f-2d84-4ded-af8a-15ec5c0335f6"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Minicípio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="397" y="234" width="143" height="20" uuid="401664a5-6333-4839-bc31-67d032dec224"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{municipio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="263" width="113" height="20" uuid="1312f24a-26be-4ebf-a837-799d566e671e"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de Exame:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="113" y="263" width="100" height="20" uuid="77125b5b-6d3c-4e99-8396-53ffcd0c5e72"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipoexame}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="129" width="68" height="20" uuid="ddfc268e-f4fb-4f23-befa-3950f27bc2c1"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prontuário:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="68" y="129" width="100" height="20" uuid="c7cc18ae-c4e9-4de3-b681-0105cb17721f"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{prontuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="166" width="43" height="20" uuid="7837dea4-4786-4aa2-a62e-393d168c73d6"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nome:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="43" y="166" width="278" height="20" uuid="c62c79d8-d17c-42db-b3ca-d0b1778a6b6b"/>
+				<textElement>
+					<font size="12" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nome}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="188" width="113" height="20" uuid="054224be-b15b-4879-bba7-51fe2ab588e4"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Nascimento:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="113" y="188" width="163" height="20" uuid="9bf33269-d27d-4b83-a57a-da5ed9ced752"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{datanascimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="281" y="188" width="40" height="20" uuid="42bb2356-5dae-499a-b81c-e9221b0f94c0"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Idade:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="321" y="188" width="219" height="20" uuid="b98d250e-93c3-41de-83a0-460fea534104"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idade}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="211" width="30" height="20" uuid="a5405c36-4f27-458e-af82-7f2c8eb8b46f"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[R.G.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="30" y="211" width="100" height="20" uuid="e18a6d03-6bbe-491d-a0d9-b17546a029dd"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{rg}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="148" y="211" width="128" height="20" uuid="881b7644-c991-4fed-8c3d-36c45de43506"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carteira Profissional:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="276" y="211" width="130" height="20" uuid="194d679a-0289-441b-8c40-ca719e9f4041"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{carteira}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="421" y="211" width="40" height="20" uuid="ec38f82a-d740-43ab-927b-b35c8dae73a0"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Série:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="461" y="211" width="79" height="20" uuid="f5debc84-cf5e-4495-9693-33dba7a8e6d6"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{serie}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="83" y="234" width="238" height="20" uuid="bd317585-e16a-42fe-8831-a0763573df58"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{empregador}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="336" y="166" width="47" height="20" uuid="29048fd4-59fc-4d69-a2c4-45c7023c2132"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Função:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="386" y="166" width="154" height="20" uuid="9059bf08-5ee4-48db-b0f1-6d5bcab00518"/>
+				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="293" width="540" height="67" uuid="72457431-451e-4d67-9d61-88e233b6f071"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Para fins de cumprimento da NR 7 item 7.4.4.3  da portaria nº 24, de 29/12/1994, da Secretaria de Segurança de Trabalho - D.O.U. de 30/12/1994, atestamos que a pessoa acima identificada, submeteu-se aos exames médicos a seguir relacionados atendendo ao dispositivo do artigo 168 da C.L.T.:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="371" width="243" height="20" uuid="511cef00-4760-4147-a23b-7f8e49024087"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[( ) Apto para a(s) função(ões)  designadas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="395" width="148" height="20" uuid="ee37457e-0f30-4e99-86e9-8a40512a4916"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[( ) Inapto para a função de:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="419" width="192" height="20" uuid="ff4ebdb4-c73b-4fe5-9497-62683cbeea82"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[( ) com restrição para a função de:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="148" y="395" width="392" height="20" uuid="6f81ec85-2b8a-4a73-9584-f3c2314b9635"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="419" width="348" height="20" uuid="1648e7f8-a543-42b8-9cec-aa08160cbfb1"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="453" width="192" height="20" uuid="20303a4c-40a7-4e87-8f82-823656baa63d"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Agentes Agressores:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="542" width="192" height="20" uuid="036f77b7-22b8-4989-9d97-5a856fe262aa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Exames Complementares:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="562" width="555" height="58" uuid="eaeae3ba-0635-41ec-9516-e1cc5e75ef12"/>
+				<textFieldExpression><![CDATA[$P{exames}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="473" width="555" height="58" uuid="89ea707a-7b7c-4225-bd2c-9835f227eca7"/>
+				<textFieldExpression><![CDATA[$P{agentesagressores}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="638" width="97" height="20" uuid="c5c9c5e2-fcb8-4e03-b586-a35b7a31f1c5"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Observação:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="97" y="655" width="458" height="1" uuid="a8ddfc28-5961-4920-a29c-87f6bfa0ecb8"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="671" width="555" height="20" uuid="d768ed85-7809-42cd-ab9f-cd738fcdf154"/>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<text><![CDATA[Catanduva, ____/____/________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="756" width="236" height="20" uuid="651ff04e-fe1b-43c5-9a47-f87832c34f71"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assinatura do Funcionário ou Canditato]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="274" y="756" width="259" height="20" uuid="9706d30f-89e8-43ab-beb6-c854ba47d0b3"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carimbo e Assinatura do Médico do Trabalho]]></text>
+			</staticText>
+			<line>
+				<reportElement x="17" y="751" width="236" height="1" uuid="6a6f6dde-c446-425f-a9e1-5c11b4673e96"/>
+			</line>
+			<line>
+				<reportElement x="276" y="750" width="257" height="1" uuid="7f0c791a-2abc-4fa5-a488-306a20380356"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="691" width="555" height="20" uuid="ff046ac7-4961-4709-9bf6-b958fd6adf3e"/>
+				<text><![CDATA[Realizei os exames citados e recebi a cópia deste atestado]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
