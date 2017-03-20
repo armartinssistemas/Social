@@ -16,6 +16,8 @@ import model.Ambulatorio;
 import model.FornecedorCana;
 import model.Paciente;
 import model.permissao.Usuario;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  *
@@ -28,24 +30,31 @@ public class GuiaMedicinaTrabalho implements Comparable<GuiaMedicinaTrabalho>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
+    private Date data;
+    
     @ManyToOne(optional = false)
     @JoinColumn(name = "ambulatorio")
+    @NotFound(action=NotFoundAction.IGNORE)
     private Ambulatorio ambulatorio;
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "tipo_exame")
+    @NotFound(action=NotFoundAction.IGNORE)
     private TipoMedicinaTrabalho tipoMedicinaTrabalho;
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "paciente")
+    @NotFound(action=NotFoundAction.IGNORE)
     private Paciente paciente;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "fornecedor_cana")    
+    @JoinColumn(name = "fornecedor_cana")  
+    @NotFound(action=NotFoundAction.IGNORE)
     private FornecedorCana fornecedorCana;
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_cad") 
+    @NotFound(action=NotFoundAction.IGNORE)
     private Usuario usuarioCadastro;
 
     public Long getId() {
@@ -56,6 +65,16 @@ public class GuiaMedicinaTrabalho implements Comparable<GuiaMedicinaTrabalho>{
         this.id = id;
     }
 
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    
+    
     public Ambulatorio getAmbulatorio() {
         return ambulatorio;
     }

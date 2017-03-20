@@ -25,7 +25,7 @@ public abstract class Dao<T> {
         this.session = getSession();
     }    
     
-    public void delete(Class<T> obj){
+    public void delete(T obj){
         Transaction transaction = session.beginTransaction();
         try{
           session.delete(obj);
@@ -36,7 +36,7 @@ public abstract class Dao<T> {
         }         
     }
 
-    public void insert(Class<T> obj){
+    public void insert(T obj){
         Transaction transaction = session.beginTransaction();
         try{
           session.persist(obj);
@@ -47,7 +47,7 @@ public abstract class Dao<T> {
         }
     }
 
-    public void update(Class<T> obj){
+    public void update(T obj){
          Transaction transaction = session.beginTransaction();
          try{
            session.merge(obj);

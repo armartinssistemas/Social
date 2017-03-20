@@ -5,16 +5,27 @@
  */
 package view.medicinatrabalho;
 
+import dao.DaoFornecedorCana;
 import dao.DaoPaciente;
+import dao.medicinatrabalho.DaoGuiMedicinaTrabalho;
 import dao.medicinatrabalho.DaoTipoMedicinaTrabalho;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import model.FornecedorCana;
 import model.Paciente;
+import model.medicinatrabalho.GuiaMedicinaTrabalho;
 import model.medicinatrabalho.TipoMedicinaTrabalho;
 import view.DadosGlobais;
 
@@ -37,8 +48,8 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         
         btNovo.setEnabled(true);
         btSalvar.setEnabled(false);
-        btCancelar.setEnabled(false);
-        btExcluir.setEnabled(false);
+        btCancelar.setEnabled(true);
+        btExcluir.setEnabled(true);
         btEditar.setEnabled(true);
         
         TextPaciente.setEnabled(false);
@@ -75,7 +86,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     }
     
     public void limpar(){
-        TextID.setText("");
+        //TextID.setText("");
         TextData.setDate(null);
         TextAMBULATORIO.setText("");
         TextTipoMedicina.setSelectedIndex(0);
@@ -91,6 +102,52 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         TextSCartProfiss.setText("");
         TextIDFORNECEDOR.setText("");
         TextFornecedor.setText("");
+    }
+    
+    public void preencheTela(GuiaMedicinaTrabalho guiaMedicinaTrabalho){
+        TextID.setText(guiaMedicinaTrabalho.getId().toString());
+        TextData.setDate(guiaMedicinaTrabalho.getData());
+        TextAMBULATORIO.setText(guiaMedicinaTrabalho.getAmbulatorio().getDescricao());
+        TextTipoMedicina.setSelectedItem(guiaMedicinaTrabalho.getTipoMedicinaTrabalho());
+        TextIDPACIENTE.setText(guiaMedicinaTrabalho.getPaciente().getId().toString());
+        TextPaciente.setText(guiaMedicinaTrabalho.getPaciente().getNome());
+        TextNasc.setText(guiaMedicinaTrabalho.getPaciente().getDataNacimento().toString());
+        TextRG.setText(guiaMedicinaTrabalho.getPaciente().getRg());
+        TextCARTEIRADETRABPACIETE.setText(guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
+        TextSCartProfiss.setText(guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
+        TextIDFORNECEDOR.setText(guiaMedicinaTrabalho.getFornecedorCana().getIDFornecedor().toString());
+        TextFornecedor.setText(guiaMedicinaTrabalho.getFornecedorCana().getNome());
+    }
+    
+    public void pesquisar(){
+        if (!TextPesquisa.getText().equals("")){
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
+            List<GuiaMedicinaTrabalho> lista = new ArrayList<>();
+            if (radioNumeroGuia.isSelected()){
+                lista = daoGuiMedicinaTrabalho.listarPorNumero(Long.parseLong(TextPesquisa.getText()));
+            }else if (RadioPaciente.isSelected()){
+                lista = daoGuiMedicinaTrabalho.listarPorPacienteNome(TextPesquisa.getText());
+            }else if (radioData.isSelected()){
+                try {
+                    lista = daoGuiMedicinaTrabalho.listarPorData(sdf.parse(TextPesquisa.getText()));
+                } catch (ParseException ex) {
+                    Logger.getLogger(MedicinaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
+            Collections.sort(lista);
+            DefaultTableModel tableModel = (DefaultTableModel) tableBusca.getModel();
+            tableModel.setNumRows(0);
+            for(GuiaMedicinaTrabalho m: lista){
+                 tableModel.addRow(new String[]{
+                     m.getId().toString(),
+                     m.getData()!=null?sdf.format(m.getData()):"",
+                     m.getAmbulatorio().getDescricao()!=null?m.getAmbulatorio().getDescricao():"", 
+                     m.getPaciente()!=null && m.getPaciente().getNome()!=null?m.getPaciente().getNome():""});
+             }
+             //tableBusca = new JTable(tableModel);
+        }
     }
     
     public MedicinaTrabalho() {
@@ -115,7 +172,8 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane4 = new javax.swing.JTabbedPane();
+        grupoRadioPesquisa = new javax.swing.ButtonGroup();
+        panelTab = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         TextID = new javax.swing.JTextField();
@@ -156,24 +214,31 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
+        RadioPaciente = new javax.swing.JRadioButton();
+        radioNumeroGuia = new javax.swing.JRadioButton();
+        radioData = new javax.swing.JRadioButton();
         TextPesquisa = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableBusca = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Aharoni", 0, 10)); // NOI18N
 
-        jTabbedPane4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        panelTab.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         jPanel1.setBackground(new java.awt.Color(206, 233, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("ID");
+
+        TextID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TextIDKeyPressed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("DATA");
@@ -433,7 +498,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 688, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -470,7 +535,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jTabbedPane4.addTab("Guias", jPanel1);
+        panelTab.addTab("Guias", jPanel1);
 
         jPanel4.setBackground(new java.awt.Color(206, 234, 255));
 
@@ -479,20 +544,41 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel15.setText("Campo de Pesquisa");
 
-        jRadioButton2.setBackground(new java.awt.Color(0, 204, 204));
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jRadioButton2.setText("Paciente (Código)");
+        RadioPaciente.setBackground(new java.awt.Color(0, 204, 204));
+        grupoRadioPesquisa.add(RadioPaciente);
+        RadioPaciente.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        RadioPaciente.setText("Paciente (Nome)");
 
-        jRadioButton3.setBackground(new java.awt.Color(0, 204, 204));
-        jRadioButton3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jRadioButton3.setText("Número Guia");
+        radioNumeroGuia.setBackground(new java.awt.Color(0, 204, 204));
+        grupoRadioPesquisa.add(radioNumeroGuia);
+        radioNumeroGuia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        radioNumeroGuia.setText("Número Guia");
 
-        jRadioButton4.setBackground(new java.awt.Color(0, 204, 204));
-        jRadioButton4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jRadioButton4.setText("Data (Dia/Mês/Ano)");
+        radioData.setBackground(new java.awt.Color(0, 204, 204));
+        grupoRadioPesquisa.add(radioData);
+        radioData.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        radioData.setText("Data (Dia/Mês/Ano)");
+
+        TextPesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextPesquisaActionPerformed(evt);
+            }
+        });
+        TextPesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TextPesquisaKeyPressed(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel16.setText("Pesquisar");
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisar.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -501,16 +587,19 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(TextPesquisa)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(TextPesquisa)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel15)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jRadioButton3)
+                                .addComponent(radioNumeroGuia)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton2)
+                                .addComponent(RadioPaciente)
                                 .addGap(18, 18, 18)
-                                .addComponent(jRadioButton4))
+                                .addComponent(radioData))
                             .addComponent(jLabel16))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -522,28 +611,40 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 .addComponent(jLabel15)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jRadioButton4))
+                    .addComponent(RadioPaciente)
+                    .addComponent(radioNumeroGuia)
+                    .addComponent(radioData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(TextPesquisa, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(TextPesquisa))
                 .addGap(19, 19, 19))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableBusca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID", "NOME", "CPF", "RG"
+                "ID", "Data", "Ambulatório", "Paciente"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tableBusca.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableBuscaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableBusca);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -553,7 +654,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -562,8 +663,8 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(216, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -577,7 +678,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jTabbedPane4.addTab("Pesquisa", jPanel2);
+        panelTab.addTab("Pesquisa", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -585,13 +686,13 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane4)
+                .addComponent(panelTab)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane4)
+                .addComponent(panelTab)
                 .addContainerGap())
         );
 
@@ -607,8 +708,31 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         }else if (TextPaciente.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Informe o Paciente");
         }else{
+            DaoFornecedorCana daoFornecedorCana = new DaoFornecedorCana();
+            FornecedorCana fornecedorCana = daoFornecedorCana.getById(Long.parseLong(TextIDFORNECEDOR.getText()));
+            DaoPaciente daoPaciente = new DaoPaciente();
+            Paciente paciente = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
+            
+            GuiaMedicinaTrabalho guiaMedicinaTrabalho = new GuiaMedicinaTrabalho();
+            guiaMedicinaTrabalho.setAmbulatorio(DadosGlobais.ambulatorio);
+            guiaMedicinaTrabalho.setUsuarioCadastro(DadosGlobais.usuarioLogado);
+            guiaMedicinaTrabalho.setFornecedorCana(fornecedorCana);
+            guiaMedicinaTrabalho.setPaciente(paciente);
+            guiaMedicinaTrabalho.setTipoMedicinaTrabalho((TipoMedicinaTrabalho)TextTipoMedicina.getSelectedItem());
+            guiaMedicinaTrabalho.setData(TextData.getDate());
+            
+            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
+            daoGuiMedicinaTrabalho.insert(guiaMedicinaTrabalho);
+            
             modoNaoEdicao();
             limpar();
+            
+            if (guiaMedicinaTrabalho.getId()!=null){
+                JOptionPane.showMessageDialog(null, "Guia registrada com sucesso!");
+                preencheTela(guiaMedicinaTrabalho);
+            }else{
+                JOptionPane.showMessageDialog(null, "Problema ao inserir registro!");
+            }
         }
     }//GEN-LAST:event_btSalvarActionPerformed
 
@@ -629,11 +753,14 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
        TextData.setDate(new Date());
        TextID.setText("NOVO");
        TextAMBULATORIO.setText(DadosGlobais.ambulatorio.getDescricao());
+       limparPaciente();
+       TextIDPACIENTE.setText("");
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         modoNaoEdicao();
         limpar();
+        TextID.setText("");
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
@@ -641,7 +768,17 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     }//GEN-LAST:event_btEditarActionPerformed
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
-        limpar();
+        if (!TextID.getText().equals("NOVO") && TextData.getDate()!=null){
+            int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja excluir?","Atenção!",JOptionPane.YES_NO_OPTION);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
+                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+                daoGuiMedicinaTrabalho.delete(guiaMedicinaTrabalho);
+                limpar();
+                TextID.setText("");
+                JOptionPane.showMessageDialog(null, "Guia excluída com sucesso!");
+            }
+        }
     }//GEN-LAST:event_btExcluirActionPerformed
 
     private void TextIDPACIENTEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDPACIENTEKeyPressed
@@ -673,8 +810,49 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         
     }//GEN-LAST:event_TextIDPACIENTEInputMethodTextChanged
 
+    private void TextIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER && !TextID.getText().equals("")){
+            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
+            GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+            if (guiaMedicinaTrabalho!=null){
+                preencheTela(guiaMedicinaTrabalho);
+            }else{
+                JOptionPane.showMessageDialog(null, "Guia não encontrada!");
+            }
+        }else{
+            limpar();
+        }
+    }//GEN-LAST:event_TextIDKeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        pesquisar();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void TextPesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextPesquisaKeyPressed
+        if (evt.getKeyCode() == evt.VK_ENTER){
+            pesquisar();
+        }
+    }//GEN-LAST:event_TextPesquisaKeyPressed
+
+    private void TextPesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextPesquisaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextPesquisaActionPerformed
+
+    private void tableBuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBuscaMouseClicked
+       if (evt.getClickCount() == 2) {
+          if (tableBusca.getRowCount() > 0){
+              Long idGuia = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
+              DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
+              GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(idGuia);
+              preencheTela(guiaMedicinaTrabalho);
+              panelTab.setSelectedIndex(0);
+          }
+       }
+    }//GEN-LAST:event_tableBuscaMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton RadioPaciente;
     private javax.swing.JTextField TextAMBULATORIO;
     private javax.swing.JTextField TextCARTEIRADETRABPACIETE;
     private com.toedter.calendar.JDateChooser TextData;
@@ -695,7 +873,9 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private javax.swing.JButton btImprimir;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSalvar;
+    private javax.swing.ButtonGroup grupoRadioPesquisa;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -717,11 +897,10 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane4;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTabbedPane panelTab;
+    private javax.swing.JRadioButton radioData;
+    private javax.swing.JRadioButton radioNumeroGuia;
+    private javax.swing.JTable tableBusca;
     // End of variables declaration//GEN-END:variables
 }

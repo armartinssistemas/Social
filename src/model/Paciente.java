@@ -21,6 +21,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "paciente",catalog = "TEOR")
@@ -57,6 +59,7 @@ public abstract class Paciente implements Comparable<Paciente>{
     
     @ManyToOne(optional = false)
     @JoinColumn(name = "fornecedorCana")
+    @NotFound(action=NotFoundAction.IGNORE)
     private FornecedorCana fornecedorCana;
     
     @OneToMany(mappedBy = "paciente")

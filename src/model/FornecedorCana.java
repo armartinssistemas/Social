@@ -25,7 +25,7 @@ import model.medicinatrabalho.GuiaMedicinaTrabalho;
 public class FornecedorCana implements Comparable<FornecedorCana>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IDFornecedor;
+    private Long IDFornecedor;
     
     @Column(length = 50)
     private String Nome;
@@ -33,7 +33,7 @@ public class FornecedorCana implements Comparable<FornecedorCana>{
     @Column(length = 50)
     private String Endereco;
     
-    @Column(length = 50)
+    @Column(length = 30)
     private String Bairro;
 
     @OneToMany(mappedBy = "fornecedorCana")
@@ -41,12 +41,12 @@ public class FornecedorCana implements Comparable<FornecedorCana>{
     
     @OneToMany(mappedBy = "fornecedorCana")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
-    
-    public int getIDFornecedor() {
+
+    public Long getIDFornecedor() {
         return IDFornecedor;
     }
 
-    public void setIDFornecedor(int IDFornecedor) {
+    public void setIDFornecedor(Long IDFornecedor) {
         this.IDFornecedor = IDFornecedor;
     }
 
