@@ -18,7 +18,7 @@ import javax.persistence.ManyToOne;
 @DiscriminatorValue(value = "depdep")
 public class Dependente extends Paciente{
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "titular")
     private Titular titular;
 

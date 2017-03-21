@@ -65,7 +65,7 @@ public abstract class Paciente implements Comparable<Paciente>{
     @Column(length = 20, name = "seriecarteiraproficional")
     private String serieCateiraTrabalho;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "fornecedorCana")
     @NotFound(action=NotFoundAction.IGNORE)
     private FornecedorCana fornecedorCana;
@@ -73,7 +73,7 @@ public abstract class Paciente implements Comparable<Paciente>{
     @OneToMany(mappedBy = "paciente")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "cargo")
     @NotFound(action=NotFoundAction.IGNORE)
     private FuncaoTrabalhador funcaoTrabalhador;
@@ -166,11 +166,6 @@ public abstract class Paciente implements Comparable<Paciente>{
         this.serieCateiraTrabalho = serieCateiraTrabalho;
     }
 
-    @Override
-    public int compareTo(Paciente o) {
-        return this.nome.compareTo(o.getNome());
-    }
-
     public FuncaoTrabalhador getFuncaoTrabalhador() {
         return funcaoTrabalhador;
     }
@@ -198,5 +193,13 @@ public abstract class Paciente implements Comparable<Paciente>{
         }
 
         return idade;
+    }
+
+    @Override
+    public int compareTo(Paciente o) {
+        if (o!=null || o.getNome()!=null)
+            return -1;
+        else
+            return this.nome.compareTo(o.getNome());
     }
 }

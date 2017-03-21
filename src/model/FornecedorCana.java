@@ -46,7 +46,7 @@ public class FornecedorCana implements Comparable<FornecedorCana>{
     @OneToMany(mappedBy = "fornecedorCana")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "cidade")
     @NotFound(action=NotFoundAction.IGNORE)    
     private Cidade cidade;

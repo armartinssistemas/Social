@@ -59,6 +59,7 @@ public class PesquisaPaciente extends javax.swing.JDialog {
     public PesquisaPaciente(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        TextPesquisa.requestFocus();
     }
 
     /**
@@ -80,6 +81,7 @@ public class PesquisaPaciente extends javax.swing.JDialog {
         tableBusca = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa de Pacientes");
         setBackground(new java.awt.Color(206, 234, 255));
 
         jPanel1.setBackground(new java.awt.Color(0, 204, 204));
@@ -98,13 +100,29 @@ public class PesquisaPaciente extends javax.swing.JDialog {
         });
 
         radioNome.setBackground(new java.awt.Color(0, 204, 204));
+        radioNome.setSelected(true);
         radioNome.setText("Nome");
+        radioNome.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioNomeActionPerformed(evt);
+            }
+        });
 
         radioCPF.setBackground(new java.awt.Color(0, 204, 204));
         radioCPF.setText("CPF");
+        radioCPF.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioCPFActionPerformed(evt);
+            }
+        });
 
         radioRG.setBackground(new java.awt.Color(0, 204, 204));
         radioRG.setText("RG");
+        radioRG.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioRGActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -150,7 +168,7 @@ public class PesquisaPaciente extends javax.swing.JDialog {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -216,6 +234,18 @@ public class PesquisaPaciente extends javax.swing.JDialog {
             dispose();
         }
     }//GEN-LAST:event_tableBuscaMouseClicked
+
+    private void radioNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioNomeActionPerformed
+        TextPesquisa.requestFocus();
+    }//GEN-LAST:event_radioNomeActionPerformed
+
+    private void radioCPFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioCPFActionPerformed
+        TextPesquisa.requestFocus();
+    }//GEN-LAST:event_radioCPFActionPerformed
+
+    private void radioRGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioRGActionPerformed
+        TextPesquisa.requestFocus();
+    }//GEN-LAST:event_radioRGActionPerformed
 
     /**
      * @param args the command line arguments

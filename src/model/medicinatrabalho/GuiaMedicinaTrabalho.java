@@ -32,27 +32,27 @@ public class GuiaMedicinaTrabalho implements Comparable<GuiaMedicinaTrabalho>{
     
     private Date data;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "ambulatorio")
     @NotFound(action=NotFoundAction.IGNORE)
     private Ambulatorio ambulatorio;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "tipo_exame")
     @NotFound(action=NotFoundAction.IGNORE)
     private TipoMedicinaTrabalho tipoMedicinaTrabalho;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "paciente")
     @NotFound(action=NotFoundAction.IGNORE)
     private Paciente paciente;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "fornecedor_cana")  
     @NotFound(action=NotFoundAction.IGNORE)
     private FornecedorCana fornecedorCana;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "user_cad") 
     @NotFound(action=NotFoundAction.IGNORE)
     private Usuario usuarioCadastro;

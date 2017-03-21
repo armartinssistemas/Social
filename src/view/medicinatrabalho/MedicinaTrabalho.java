@@ -24,6 +24,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -139,13 +140,13 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     
     public void PreencherPaciente(Paciente p){
         TextIDPACIENTE.setText(p.getId().toString());
-        TextPaciente.setText(p.getNome());
-        TextRG.setText(p.getRg());
-        TextFornecedor.setText(p.getFornecedorCana().getNome());
-        TextIDFORNECEDOR.setText(p.getFornecedorCana().getIDFornecedor()+"");
-        TextNasc.setText(new SimpleDateFormat("dd/mm/yyyy").format(p.getDataNacimento()));
-        TextCARTEIRADETRABPACIETE.setText(p.getNumeroCarteiraTrabalho());
-        TextSCartProfiss.setText(p.getSerieCateiraTrabalho());
+        TextPaciente.setText(p.getNome()==null?"":p.getNome());
+        TextRG.setText(p.getRg()==null?"":p.getRg());
+        TextFornecedor.setText(p.getFornecedorCana()==null?"":p.getFornecedorCana().getNome());
+        TextIDFORNECEDOR.setText(p.getFornecedorCana()==null?"":p.getFornecedorCana().getIDFornecedor()+"");
+        TextNasc.setText(p.getDataNacimento()==null?"":new SimpleDateFormat("dd/mm/yyyy").format(p.getDataNacimento()));
+        TextCARTEIRADETRABPACIETE.setText(p.getNumeroCarteiraTrabalho()==null?"":p.getNumeroCarteiraTrabalho());
+        TextSCartProfiss.setText(p.getSerieCateiraTrabalho()==null?"":p.getSerieCateiraTrabalho());
     }
     
     public void pesquisar(){
@@ -253,10 +254,16 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         tableBusca = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Guia de Medicina do Trabalho");
         setBackground(new java.awt.Color(255, 255, 255));
         setFont(new java.awt.Font("Aharoni", 0, 10)); // NOI18N
 
         panelTab.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        panelTab.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                panelTabStateChanged(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(206, 233, 255));
 
@@ -582,6 +589,12 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
         panelTab.addTab("Guias", jPanel1);
 
+        jPanel2.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jPanel2FocusGained(evt);
+            }
+        });
+
         jPanel4.setBackground(new java.awt.Color(206, 234, 255));
 
         jPanel5.setBackground(new java.awt.Color(0, 204, 204));
@@ -593,16 +606,32 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         grupoRadioPesquisa.add(RadioPaciente);
         RadioPaciente.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         RadioPaciente.setText("Paciente (Nome)");
+        RadioPaciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RadioPacienteActionPerformed(evt);
+            }
+        });
 
         radioNumeroGuia.setBackground(new java.awt.Color(0, 204, 204));
         grupoRadioPesquisa.add(radioNumeroGuia);
         radioNumeroGuia.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        radioNumeroGuia.setSelected(true);
         radioNumeroGuia.setText("Número Guia");
+        radioNumeroGuia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioNumeroGuiaActionPerformed(evt);
+            }
+        });
 
         radioData.setBackground(new java.awt.Color(0, 204, 204));
         grupoRadioPesquisa.add(radioData);
         radioData.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         radioData.setText("Data (Dia/Mês/Ano)");
+        radioData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioDataActionPerformed(evt);
+            }
+        });
 
         TextPesquisa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -902,6 +931,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
               GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(idGuia);
               preencheTela(guiaMedicinaTrabalho);
               panelTab.setSelectedIndex(0);
+              modoNaoEdicao();
           }
        }
     }//GEN-LAST:event_tableBuscaMouseClicked
@@ -972,6 +1002,28 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Escolhe uma guia para ser impressa!");
         }
     }//GEN-LAST:event_btEmitirRelatórioActionPerformed
+
+    private void jPanel2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jPanel2FocusGained
+        
+    }//GEN-LAST:event_jPanel2FocusGained
+
+    private void panelTabStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_panelTabStateChanged
+        if (((JTabbedPane)evt.getSource()).getSelectedIndex() == 1){
+            TextPesquisa.requestFocus();
+        }
+    }//GEN-LAST:event_panelTabStateChanged
+
+    private void radioNumeroGuiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioNumeroGuiaActionPerformed
+        TextPesquisa.requestFocus();
+    }//GEN-LAST:event_radioNumeroGuiaActionPerformed
+
+    private void RadioPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RadioPacienteActionPerformed
+        TextPesquisa.requestFocus();
+    }//GEN-LAST:event_RadioPacienteActionPerformed
+
+    private void radioDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioDataActionPerformed
+        TextPesquisa.requestFocus();
+    }//GEN-LAST:event_radioDataActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

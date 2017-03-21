@@ -43,7 +43,6 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        textAmbulatorios = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         TextLogin = new javax.swing.JTextField();
@@ -53,7 +52,7 @@ public class Login extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        textAmbulatorios1 = new javax.swing.JComboBox<>();
+        textAmbulatorios = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         TextLogin3 = new javax.swing.JTextField();
@@ -120,7 +119,7 @@ public class Login extends javax.swing.JFrame {
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/novo-logo.png"))); // NOI18N
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("MEDICINA DO TRABALHO");
+        setTitle("AFCRC - Social");
         setBackground(new java.awt.Color(0, 216, 255));
         setResizable(false);
 
@@ -139,9 +138,9 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        textAmbulatorios1.addActionListener(new java.awt.event.ActionListener() {
+        textAmbulatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textAmbulatorios1ActionPerformed(evt);
+                textAmbulatoriosActionPerformed(evt);
             }
         });
 
@@ -211,7 +210,7 @@ public class Login extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jButton2)
-                            .addComponent(textAmbulatorios1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textAmbulatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(82, 82, 82))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -222,7 +221,7 @@ public class Login extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(textAmbulatorios1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(textAmbulatorios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -271,9 +270,9 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_TextLogin3ActionPerformed
 
-    private void textAmbulatorios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textAmbulatorios1ActionPerformed
+    private void textAmbulatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textAmbulatoriosActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_textAmbulatorios1ActionPerformed
+    }//GEN-LAST:event_textAmbulatoriosActionPerformed
         
         
     
@@ -311,12 +310,8 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TextLogin;
-    private javax.swing.JTextField TextLogin1;
-    private javax.swing.JTextField TextLogin2;
     private javax.swing.JTextField TextLogin3;
     private javax.swing.JPasswordField TextSenha;
-    private javax.swing.JPasswordField TextSenha1;
-    private javax.swing.JPasswordField TextSenha2;
     private javax.swing.JPasswordField TextSenha3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -326,19 +321,12 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JComboBox<String> textAmbulatorios;
-    private javax.swing.JComboBox<String> textAmbulatorios1;
     // End of variables declaration//GEN-END:variables
 
     public void botaoLogin(){
