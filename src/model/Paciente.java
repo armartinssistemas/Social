@@ -5,7 +5,15 @@
  */
 package model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.ZoneOffset;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -64,6 +72,11 @@ public abstract class Paciente implements Comparable<Paciente>{
     
     @OneToMany(mappedBy = "paciente")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cargo")
+    @NotFound(action=NotFoundAction.IGNORE)
+    private FuncaoTrabalhador funcaoTrabalhador;
     
     public Long getId() {
         return id;
@@ -157,6 +170,33 @@ public abstract class Paciente implements Comparable<Paciente>{
     public int compareTo(Paciente o) {
         return this.nome.compareTo(o.getNome());
     }
+
+    public FuncaoTrabalhador getFuncaoTrabalhador() {
+        return funcaoTrabalhador;
+    }
+
+    public void setFuncaoTrabalhador(FuncaoTrabalhador funcaoTrabalhador) {
+        this.funcaoTrabalhador = funcaoTrabalhador;
+    }
     
-    
+    public int getIdade(){
+        Calendar dataNasc = new GregorianCalendar();
+        dataNasc.setTime(this.dataNacimento);
+
+        // Cria um objeto calendar com a data atual
+        Calendar hoje = Calendar.getInstance();
+        
+        // Obtém a idade baseado no ano
+        int idade = hoje.get(Calendar.YEAR) - dataNasc.get(Calendar.YEAR);
+
+
+
+        dataNasc.add(Calendar.YEAR, idade);
+
+        if (hoje.before(dataNasc)) {
+            idade--;
+        }
+
+        return idade;
+    }
 }

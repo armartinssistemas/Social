@@ -7,8 +7,10 @@ package util;
  */
 
 import model.Ambulatorio;
+import model.Cidade;
 import model.Dependente;
 import model.FornecedorCana;
+import model.FuncaoTrabalhador;
 import model.Paciente;
 import model.Titular;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
@@ -52,6 +54,8 @@ public class HibernateUtil {
                 ac.addAnnotatedClass(GuiaMedicinaTrabalho.class);
                 ac.addAnnotatedClass(TipoMedicinaTrabalho.class);
                 ac.addAnnotatedClass(Usuario.class);
+                ac.addAnnotatedClass(FuncaoTrabalhador.class);
+                ac.addAnnotatedClass(Cidade.class);
                 
                 sessionFactory = ac.configure().buildSessionFactory();
             }catch(Throwable ex){

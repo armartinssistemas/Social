@@ -12,9 +12,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  *
@@ -41,6 +45,11 @@ public class FornecedorCana implements Comparable<FornecedorCana>{
     
     @OneToMany(mappedBy = "fornecedorCana")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "cidade")
+    @NotFound(action=NotFoundAction.IGNORE)    
+    private Cidade cidade;
 
     public Long getIDFornecedor() {
         return IDFornecedor;
@@ -93,5 +102,13 @@ public class FornecedorCana implements Comparable<FornecedorCana>{
     @Override
     public int compareTo(FornecedorCana o) {
         return this.Nome.compareTo(o.getNome());
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 }

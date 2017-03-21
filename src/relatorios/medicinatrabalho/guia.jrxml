@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55707468-9438-4fb1-a42e-0b591a4acb83">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="242"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="empregador" class="java.lang.String"/>
 	<parameter name="municipio" class="java.lang.String"/>
 	<parameter name="tipoexame" class="java.lang.String"/>
@@ -16,6 +16,7 @@
 	<parameter name="funcao" class="java.lang.String"/>
 	<parameter name="exames" class="java.lang.String"/>
 	<parameter name="agentesagressores" class="java.lang.String"/>
+	<parameter name="naso" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -68,7 +69,7 @@
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Minicípio:]]></text>
+				<text><![CDATA[Município:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="397" y="234" width="143" height="20" uuid="401664a5-6333-4839-bc31-67d032dec224"/>
@@ -312,6 +313,20 @@
 				<reportElement x="0" y="691" width="555" height="20" uuid="ff046ac7-4961-4709-9bf6-b958fd6adf3e"/>
 				<text><![CDATA[Realizei os exames citados e recebi a cópia deste atestado]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="192" y="129" width="82" height="20" uuid="3c6a9a56-ed5f-4ae8-9ed9-897fca5b89fa"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Número ASO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="274" y="129" width="100" height="20" uuid="be5c845b-49bc-49a0-9517-24344cfabb71"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{naso}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>
