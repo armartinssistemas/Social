@@ -149,7 +149,6 @@ public class Login extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("Usuário:");
 
-        TextLogin3.setText("admin");
         TextLogin3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TextLogin3ActionPerformed(evt);
@@ -158,8 +157,6 @@ public class Login extends javax.swing.JFrame {
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Senha:");
-
-        TextSenha3.setText("assoccanamartins");
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setText("Ambulatorio");

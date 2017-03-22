@@ -883,6 +883,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEditarActionPerformed
+        if (TextData.getDate()!= null && !TextID.getText().equals("NOVO"))
         modoEdicao();
     }//GEN-LAST:event_btEditarActionPerformed
 
