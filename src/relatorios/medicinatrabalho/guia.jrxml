@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55707468-9438-4fb1-a42e-0b591a4acb83">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="485"/>
+	<property name="ireport.y" value="484"/>
 	<parameter name="empregador" class="java.lang.String"/>
 	<parameter name="municipio" class="java.lang.String"/>
 	<parameter name="tipoexame" class="java.lang.String"/>
@@ -261,65 +261,65 @@
 				<text><![CDATA[Agentes Agressores:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="542" width="192" height="20" uuid="036f77b7-22b8-4989-9d97-5a856fe262aa"/>
+				<reportElement x="0" y="555" width="192" height="20" uuid="036f77b7-22b8-4989-9d97-5a856fe262aa"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Exames Complementares:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="562" width="555" height="58" uuid="eaeae3ba-0635-41ec-9516-e1cc5e75ef12"/>
+				<reportElement x="0" y="575" width="555" height="76" uuid="eaeae3ba-0635-41ec-9516-e1cc5e75ef12"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{exames}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="473" width="555" height="58" uuid="89ea707a-7b7c-4225-bd2c-9835f227eca7"/>
+				<reportElement x="0" y="473" width="555" height="72" uuid="89ea707a-7b7c-4225-bd2c-9835f227eca7"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{agentesagressores}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="638" width="97" height="20" uuid="c5c9c5e2-fcb8-4e03-b586-a35b7a31f1c5"/>
+				<reportElement x="0" y="662" width="97" height="20" uuid="c5c9c5e2-fcb8-4e03-b586-a35b7a31f1c5"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Observação:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="97" y="655" width="458" height="1" uuid="a8ddfc28-5961-4920-a29c-87f6bfa0ecb8"/>
+				<reportElement x="97" y="679" width="458" height="1" uuid="a8ddfc28-5961-4920-a29c-87f6bfa0ecb8"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="671" width="555" height="20" uuid="d768ed85-7809-42cd-ab9f-cd738fcdf154"/>
+				<reportElement x="0" y="695" width="555" height="20" uuid="d768ed85-7809-42cd-ab9f-cd738fcdf154"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[Catanduva, ____/____/________]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="17" y="756" width="236" height="20" uuid="651ff04e-fe1b-43c5-9a47-f87832c34f71"/>
+				<reportElement x="17" y="772" width="236" height="20" uuid="651ff04e-fe1b-43c5-9a47-f87832c34f71"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Assinatura do Funcionário ou Canditato]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="274" y="756" width="259" height="20" uuid="9706d30f-89e8-43ab-beb6-c854ba47d0b3"/>
+				<reportElement x="274" y="772" width="259" height="20" uuid="9706d30f-89e8-43ab-beb6-c854ba47d0b3"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Carimbo e Assinatura do Médico do Trabalho]]></text>
 			</staticText>
 			<line>
-				<reportElement x="17" y="751" width="236" height="1" uuid="6a6f6dde-c446-425f-a9e1-5c11b4673e96"/>
+				<reportElement x="17" y="767" width="236" height="1" uuid="6a6f6dde-c446-425f-a9e1-5c11b4673e96"/>
 			</line>
 			<line>
-				<reportElement x="276" y="750" width="257" height="1" uuid="7f0c791a-2abc-4fa5-a488-306a20380356"/>
+				<reportElement x="276" y="766" width="257" height="1" uuid="7f0c791a-2abc-4fa5-a488-306a20380356"/>
 			</line>
 			<staticText>
-				<reportElement x="0" y="691" width="555" height="20" uuid="ff046ac7-4961-4709-9bf6-b958fd6adf3e"/>
+				<reportElement x="0" y="715" width="555" height="20" uuid="ff046ac7-4961-4709-9bf6-b958fd6adf3e"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>

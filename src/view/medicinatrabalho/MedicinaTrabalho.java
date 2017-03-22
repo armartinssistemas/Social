@@ -1023,6 +1023,8 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             params.put("carteira",guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
             params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
             params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
+            params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
+            params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
             
             GeraRelatorio geraRelatorio = new GeraRelatorio();
             geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
