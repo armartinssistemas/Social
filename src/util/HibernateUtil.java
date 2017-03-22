@@ -16,6 +16,7 @@ import model.Titular;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
 import model.medicinatrabalho.TipoMedicinaTrabalho;
 import model.permissao.Usuario;
+import model.recolhimento.RecolhimentoDiario;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.SessionFactory;
 
@@ -56,6 +57,7 @@ public class HibernateUtil {
                 ac.addAnnotatedClass(Usuario.class);
                 ac.addAnnotatedClass(FuncaoTrabalhador.class);
                 ac.addAnnotatedClass(Cidade.class);
+                ac.addAnnotatedClass(RecolhimentoDiario.class);
                 
                 sessionFactory = ac.configure().buildSessionFactory();
             }catch(Throwable ex){
