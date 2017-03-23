@@ -22,7 +22,7 @@ public class DaoGuiMedicinaTrabalho extends Dao<GuiaMedicinaTrabalho>{
         super(session);
     }
 
-    public DaoGuiMedicinaTrabalho(){
+    public DaoGuiMedicinaTrabalho() throws Exception{
         super();
     }
 

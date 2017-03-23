@@ -20,7 +20,7 @@ public DaoRecolhimentoDiario(Session session) {
         super(session);
     }
     
-    public DaoRecolhimentoDiario(){
+    public DaoRecolhimentoDiario() throws Exception{
         super();
     }
 

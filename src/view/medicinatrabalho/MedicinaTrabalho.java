@@ -58,14 +58,20 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
      * Creates new form MedicinaTrabalho
      */
     
+    private DaoTipoMedicinaTrabalho daoTipoMedicinaTrabalho;
+    private DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho;
+    private DaoPaciente daoPaciente;
+    private DaoFornecedorCana daoFornecedorCana;
+    
+    
+    private DaoRecolhimentoDiario daoRecolhimentoDiario;
+    
     public void buscaPaciente(Paciente p){
         if (p!=null){
             PreencherPaciente(p);
         }else{
             JOptionPane.showMessageDialog(null, "Paciente não encontrado");
         }
-
-        DaoRecolhimentoDiario daoRecolhimentoDiario = new DaoRecolhimentoDiario();
         RecolhimentoDiario recolhimentoDiario = daoRecolhimentoDiario.getByIDFornecedor(p.getFornecedorCana().getIDFornecedor());
         if (recolhimentoDiario != null && recolhimentoDiario.autorizaAtendimento()){
             barraProgracao.setMaximum(recolhimentoDiario.getMaxUsoRecolhimento());
@@ -154,7 +160,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         TextTipoMedicina.setSelectedItem(guiaMedicinaTrabalho.getTipoMedicinaTrabalho());
         TextIDPACIENTE.setText(guiaMedicinaTrabalho.getPaciente().getId().toString());
         TextPaciente.setText(guiaMedicinaTrabalho.getPaciente().getNome());
-        TextNasc.setText(guiaMedicinaTrabalho.getPaciente().getDataNacimento().toString());
+        TextNasc.setText(guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":new SimpleDateFormat("dd/MM/yyyy").format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
         TextRG.setText(guiaMedicinaTrabalho.getPaciente().getRg());
         TextCARTEIRADETRABPACIETE.setText(guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
         TextSCartProfiss.setText(guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
@@ -168,7 +174,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         TextRG.setText(p.getRg()==null?"":p.getRg());
         TextFornecedor.setText(p.getFornecedorCana()==null?"":p.getFornecedorCana().getNome());
         TextIDFORNECEDOR.setText(p.getFornecedorCana()==null?"":p.getFornecedorCana().getIDFornecedor()+"");
-        TextNasc.setText(p.getDataNacimento()==null?"":new SimpleDateFormat("dd/mm/yyyy").format(p.getDataNacimento()));
+        TextNasc.setText(p.getDataNacimento()==null?"":new SimpleDateFormat("dd/MM/yyyy").format(p.getDataNacimento()));
         TextCARTEIRADETRABPACIETE.setText(p.getNumeroCarteiraTrabalho()==null?"":p.getNumeroCarteiraTrabalho());
         TextSCartProfiss.setText(p.getSerieCateiraTrabalho()==null?"":p.getSerieCateiraTrabalho());
     }
@@ -176,7 +182,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     public void pesquisar(){
         if (!TextPesquisa.getText().equals("")){
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
             List<GuiaMedicinaTrabalho> lista = new ArrayList<>();
             if (radioNumeroGuia.isSelected()){
                 lista = daoGuiMedicinaTrabalho.listarPorNumero(Long.parseLong(TextPesquisa.getText()));
@@ -208,13 +213,22 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         initComponents();
         modoNaoEdicao();
         
-        //Carrega a lista de tipo de medicina do trabalho
-        DaoTipoMedicinaTrabalho daoTipoMedicinaTrabalho = new DaoTipoMedicinaTrabalho();
-        List<TipoMedicinaTrabalho> tipos = daoTipoMedicinaTrabalho.listar();
-        //Ordena em Ordem Alfabética
-        Collections.sort(tipos);
-        tipos.add(0, null);
-        TextTipoMedicina.setModel(new DefaultComboBoxModel(tipos.toArray()));
+        
+        try{
+            daoPaciente = new DaoPaciente();
+            daoRecolhimentoDiario = new DaoRecolhimentoDiario();
+            daoTipoMedicinaTrabalho = new DaoTipoMedicinaTrabalho();
+            daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
+            daoFornecedorCana = new DaoFornecedorCana();
+            //Carrega a lista de tipo de medicina do trabalho
+            List<TipoMedicinaTrabalho> tipos = daoTipoMedicinaTrabalho.listar();
+            //Ordena em Ordem Alfabética
+            Collections.sort(tipos);
+            tipos.add(0, null);
+            TextTipoMedicina.setModel(new DefaultComboBoxModel(tipos.toArray()));
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problema de conexão!");
+        }
     }
 
     /**
@@ -296,6 +310,11 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("ID");
 
+        TextID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextIDActionPerformed(evt);
+            }
+        });
         TextID.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 TextIDKeyPressed(evt);
@@ -327,10 +346,10 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jLabel7.setText("PACIENTE");
 
         TextIDPACIENTE.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 TextIDPACIENTEInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         TextIDPACIENTE.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -376,6 +395,12 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         btPesqPaciente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btPesqPacienteActionPerformed(evt);
+            }
+        });
+
+        TextNasc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextNascActionPerformed(evt);
             }
         });
 
@@ -813,11 +838,8 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         }else if (TextPaciente.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Informe o Paciente");
         }else{
-            DaoFornecedorCana daoFornecedorCana = new DaoFornecedorCana();
             FornecedorCana fornecedorCana = daoFornecedorCana.getById(Long.parseLong(TextIDFORNECEDOR.getText()));
-            DaoPaciente daoPaciente = new DaoPaciente();
             Paciente paciente = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
-            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
             if (TextID.getText().equals("NOVO")){
                 GuiaMedicinaTrabalho guiaMedicinaTrabalho = new GuiaMedicinaTrabalho();
                 guiaMedicinaTrabalho.setAmbulatorio(DadosGlobais.ambulatorio);
@@ -891,7 +913,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         if (!TextID.getText().equals("NOVO") && TextData.getDate()!=null){
             int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja excluir?","Atenção!",JOptionPane.YES_NO_OPTION);
             if(dialogResult == JOptionPane.YES_OPTION){
-                DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
                 GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
                 daoGuiMedicinaTrabalho.delete(guiaMedicinaTrabalho);
                 limpar();
@@ -904,7 +925,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private void TextIDPACIENTEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDPACIENTEKeyPressed
         if(evt.getKeyCode() == evt.VK_ENTER) {
             if (!TextIDPACIENTE.equals("")){
-                DaoPaciente daoPaciente = new DaoPaciente();
                 Paciente p = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
                 buscaPaciente(p);
                 
@@ -925,7 +945,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
     private void TextIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDKeyPressed
         if (evt.getKeyCode() == evt.VK_ENTER && !TextID.getText().equals("")){
-            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
             GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
             if (guiaMedicinaTrabalho!=null){
                 preencheTela(guiaMedicinaTrabalho);
@@ -955,7 +974,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
        if (evt.getClickCount() == 2) {
           if (tableBusca.getRowCount() > 0){
               Long idGuia = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
-              DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
               GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(idGuia);
               preencheTela(guiaMedicinaTrabalho);
               panelTab.setSelectedIndex(0);
@@ -973,7 +991,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         if (TextData.getDate()!=null && !TextID.getText().equals("NOVO")){
-            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
             GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
             
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1006,7 +1023,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         if (TextData.getDate()!=null && !TextID.getText().equals("NOVO")){
             String nome = JOptionPane.showInputDialog("Informe o nome do Paciente",globalMudaNome);
             globalMudaNome = nome;
-            DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
             GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
             
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -1054,6 +1070,14 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private void radioDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioDataActionPerformed
         TextPesquisa.requestFocus();
     }//GEN-LAST:event_radioDataActionPerformed
+
+    private void TextNascActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextNascActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextNascActionPerformed
+
+    private void TextIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TextIDActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -42,7 +42,7 @@ public class HibernateUtil {
         }
     }*/
     
-    public static SessionFactory getSessionFactory() {
+    public static SessionFactory getSessionFactory() throws Exception{
         //return sessionFactory;
         if(sessionFactory == null){
             try{
@@ -60,9 +60,8 @@ public class HibernateUtil {
                 ac.addAnnotatedClass(RecolhimentoDiario.class);
                 
                 sessionFactory = ac.configure().buildSessionFactory();
-            }catch(Throwable ex){
-                ex.printStackTrace();
-                throw new ExceptionInInitializerError(ex);
+            }catch(Exception ex){
+                throw new Exception();
             }
             return sessionFactory;
         }else{

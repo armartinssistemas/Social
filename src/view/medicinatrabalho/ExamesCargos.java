@@ -22,18 +22,24 @@ public class ExamesCargos extends javax.swing.JFrame {
     /**
      * Creates new form ExamesCargos
      */
+    private DaoFuncaoTrabalhador daoFuncaoTrabalhador;
+    
     public ExamesCargos() {
         initComponents();
         
-        DaoFuncaoTrabalhador daoFuncaoTrabalhador = new DaoFuncaoTrabalhador();
-        //Busca a listas
-        List<FuncaoTrabalhador> lista = daoFuncaoTrabalhador.listar();
-        //Ordena a lista
-        Collections.sort(lista);
-        //Adiciona item vazio no primeiro item
-        lista.add(0, null);
-        //Adiciona lista no campo de texto
-        TextFuncoes.setModel(new DefaultComboBoxModel(lista.toArray()));
+        try{
+            daoFuncaoTrabalhador = new DaoFuncaoTrabalhador();
+            //Busca a listas
+            List<FuncaoTrabalhador> lista = daoFuncaoTrabalhador.listar();
+            //Ordena a lista
+            Collections.sort(lista);
+            //Adiciona item vazio no primeiro item
+            lista.add(0, null);
+            //Adiciona lista no campo de texto
+            TextFuncoes.setModel(new DefaultComboBoxModel(lista.toArray()));
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problem de conexão");
+        }
     }
 
     /**
@@ -168,7 +174,6 @@ public class ExamesCargos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (TextFuncoes.getSelectedItem()!=null){
-            DaoFuncaoTrabalhador daoFuncaoTrabalhador = new DaoFuncaoTrabalhador();
             FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
             funcaoTrabalhador.setAgagressores(TextAgentesAgressores.getText());
             funcaoTrabalhador.setExcomplementares(TextExamesComplementares.getText());

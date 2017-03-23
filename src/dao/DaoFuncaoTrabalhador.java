@@ -19,7 +19,7 @@ public class DaoFuncaoTrabalhador extends Dao<FuncaoTrabalhador>{
         super(session);
     }
  
-    public DaoFuncaoTrabalhador(){
+    public DaoFuncaoTrabalhador() throws Exception{
         super();
     }
     

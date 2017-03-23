@@ -19,7 +19,7 @@ public class DaoFornecedorCana extends Dao<FornecedorCana>{
         super(session);
     }
     
-    public DaoFornecedorCana(){
+    public DaoFornecedorCana() throws Exception{
         super();
     }
 

@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import model.Ambulatorio;
 import model.permissao.Usuario;
+import org.hibernate.exception.JDBCConnectionException;
 
 /**
  *
@@ -21,16 +22,25 @@ import model.permissao.Usuario;
  */
 public class Login extends javax.swing.JFrame {
 
+    DaoAmbulatorio daoAmbulatorio;
+    DaoUsuario daoUsuario;
+    
     /**
      * Creates new form Login
      */
-    public Login() {
+    public Login(){
         initComponents();
-        DaoAmbulatorio daoAmbulatorio = new DaoAmbulatorio();
-        List<Ambulatorio> ambulatorios = daoAmbulatorio.listar();
-        Collections.sort(ambulatorios);
-        ambulatorios.add(0, null);
-        textAmbulatorios.setModel(new DefaultComboBoxModel(ambulatorios.toArray()));
+        try{
+            daoAmbulatorio = new DaoAmbulatorio();
+            daoUsuario = new DaoUsuario();
+            List<Ambulatorio> ambulatorios = daoAmbulatorio.listar();
+            Collections.sort(ambulatorios);
+            ambulatorios.add(0, null);
+            textAmbulatorios.setModel(new DefaultComboBoxModel(ambulatorios.toArray()));
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problema de Conexão!");
+            System.exit(0);
+        }
     }
 
     /**
@@ -330,7 +340,6 @@ public class Login extends javax.swing.JFrame {
         if (textAmbulatorios.getSelectedItem()==null){
            JOptionPane.showMessageDialog(null, "Inforrme o Ambulatório");
         }else{
-            DaoUsuario daoUsuario = new DaoUsuario();
             Usuario usuario = daoUsuario.login(TextLogin.getText().trim(), TextSenha.getText().trim());
             if (usuario != null){
                 DadosGlobais.ambulatorio = (Ambulatorio) textAmbulatorios.getSelectedItem();

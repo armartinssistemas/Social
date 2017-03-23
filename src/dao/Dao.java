@@ -5,9 +5,11 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.lang.Class;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import javax.persistence.Entity;
 import model.Ambulatorio;
+import org.hibernate.exception.JDBCConnectionException;
 
 /**
  *
@@ -21,7 +23,7 @@ public abstract class Dao<T> {
         this.session = session;
     }
     
-    public Dao(){
+    public Dao() throws Exception{
         this.session = getSession();
     }    
     

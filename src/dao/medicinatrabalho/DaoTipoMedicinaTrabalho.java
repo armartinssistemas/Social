@@ -19,7 +19,7 @@ public class DaoTipoMedicinaTrabalho extends Dao<TipoMedicinaTrabalho>{
         super(session);
     }
     
-    public DaoTipoMedicinaTrabalho(){
+    public DaoTipoMedicinaTrabalho() throws Exception{
         super();
     }
 

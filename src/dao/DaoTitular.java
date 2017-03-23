@@ -19,7 +19,7 @@ public class DaoTitular extends Dao<Titular>{
         super(session);
     }
  
-    public DaoTitular(){
+    public DaoTitular() throws Exception{
         super();
     }
     

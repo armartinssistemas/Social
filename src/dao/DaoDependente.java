@@ -19,7 +19,7 @@ public class DaoDependente extends Dao<Dependente>{
         super(session);
     }
     
-    public DaoDependente(){
+    public DaoDependente() throws Exception{
         super();
     }
 

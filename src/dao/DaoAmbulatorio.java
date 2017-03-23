@@ -20,7 +20,7 @@ public class DaoAmbulatorio extends Dao<Ambulatorio>{
         super(session);
     }
     
-    public DaoAmbulatorio(){
+    public DaoAmbulatorio() throws Exception{
         super();
     }
 

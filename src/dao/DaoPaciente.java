@@ -23,7 +23,7 @@ public class DaoPaciente extends Dao<Paciente>{
         super(session);
     }
 
-    public DaoPaciente(){
+    public DaoPaciente() throws Exception{
         super();
     }
 

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Paciente;
 
@@ -23,6 +24,7 @@ public class PesquisaPaciente extends javax.swing.JDialog {
      * Creates new form Teste
      */
     private static Paciente pacienteSelecionado;
+    private DaoPaciente daoPaciente;
     
     public static Paciente buscaPaciente(JFrame parent){
         PesquisaPaciente pesquisaPaciente = new PesquisaPaciente(parent, true);
@@ -32,7 +34,6 @@ public class PesquisaPaciente extends javax.swing.JDialog {
     
     public void pesquisar(){
         if (!TextPesquisa.getText().equals("")){
-            DaoPaciente daoPaciente = new DaoPaciente();
             List<Paciente> lista = new ArrayList<Paciente>();
             if (radioNome.isSelected()){
                 lista = daoPaciente.listarPorNome(TextPesquisa.getText());
@@ -60,6 +61,11 @@ public class PesquisaPaciente extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         TextPesquisa.requestFocus();
+        try{
+            daoPaciente = new DaoPaciente();
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problema de conexão!");
+        }
     }
 
     /**
@@ -229,7 +235,7 @@ public class PesquisaPaciente extends javax.swing.JDialog {
     private void tableBuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBuscaMouseClicked
         if (evt.getClickCount() == 2){
             long codPaciente = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
-            Paciente p = new DaoPaciente().getById(codPaciente);
+            Paciente p = daoPaciente.getById(codPaciente);
             this.pacienteSelecionado = p;
             dispose();
         }
