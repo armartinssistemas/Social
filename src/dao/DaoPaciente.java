@@ -28,15 +28,15 @@ public class DaoPaciente extends Dao<Paciente>{
     }
 
     
-    public Paciente getById(Long Id) {
+    public Paciente getById(Long Id) throws Exception{
         return super.getById(Paciente.class, Id);
     }
 
-    public List<Paciente> listar() {
+    public List<Paciente> listar() throws Exception{
         return super.listar(Paciente.class); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public List<Paciente> listarPorNome(String nome){
+    public List<Paciente> listarPorNome(String nome) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         List<Paciente> lista = new ArrayList<>();
@@ -54,7 +54,7 @@ public class DaoPaciente extends Dao<Paciente>{
         }        
     }
     
-    public List<Paciente> listarPorCPF(String cpf){
+    public List<Paciente> listarPorCPF(String cpf) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         List<Paciente> lista = new ArrayList<>();
@@ -72,7 +72,7 @@ public class DaoPaciente extends Dao<Paciente>{
         }        
     }
 
-    public List<Paciente> listarPorRG(String rg){
+    public List<Paciente> listarPorRG(String rg) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         List<Paciente> lista = new ArrayList<>();

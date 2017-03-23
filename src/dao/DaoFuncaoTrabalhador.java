@@ -23,11 +23,11 @@ public class DaoFuncaoTrabalhador extends Dao<FuncaoTrabalhador>{
         super();
     }
     
-    public FuncaoTrabalhador getById(Long Id) {
+    public FuncaoTrabalhador getById(Long Id) throws Exception{
         return super.getById(FuncaoTrabalhador.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public List<FuncaoTrabalhador> listar() {
+    public List<FuncaoTrabalhador> listar() throws Exception{
         return super.listar(FuncaoTrabalhador.class); //To change body of generated methods, choose Tools | Templates.
     }
     

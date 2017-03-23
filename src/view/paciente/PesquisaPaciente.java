@@ -33,27 +33,31 @@ public class PesquisaPaciente extends javax.swing.JDialog {
     }
     
     public void pesquisar(){
-        if (!TextPesquisa.getText().equals("")){
-            List<Paciente> lista = new ArrayList<Paciente>();
-            if (radioNome.isSelected()){
-                lista = daoPaciente.listarPorNome(TextPesquisa.getText());
-            }else if (radioCPF.isSelected()){
-                lista = daoPaciente.listarPorCPF(TextPesquisa.getText());
-            }else if (radioRG.isSelected()){
-                lista = daoPaciente.listarPorRG(TextPesquisa.getText());
+        try{
+            if (!TextPesquisa.getText().equals("")){
+                List<Paciente> lista = new ArrayList<Paciente>();
+                if (radioNome.isSelected()){
+                    lista = daoPaciente.listarPorNome(TextPesquisa.getText());
+                }else if (radioCPF.isSelected()){
+                    lista = daoPaciente.listarPorCPF(TextPesquisa.getText());
+                }else if (radioRG.isSelected()){
+                    lista = daoPaciente.listarPorRG(TextPesquisa.getText());
+                }
+
+                Collections.sort(lista);
+                DefaultTableModel tableModel = (DefaultTableModel) tableBusca.getModel();
+                tableModel.setNumRows(0);
+                for(Paciente p: lista){
+                     tableModel.addRow(new String[]{
+                         p.getId().toString(),
+                         p.getNome(),
+                         p.getRg()!=null?p.getRg():"",
+                         p.getCpf()!=null?p.getCpf():""
+                     });
+                 }            
             }
-            
-            Collections.sort(lista);
-            DefaultTableModel tableModel = (DefaultTableModel) tableBusca.getModel();
-            tableModel.setNumRows(0);
-            for(Paciente p: lista){
-                 tableModel.addRow(new String[]{
-                     p.getId().toString(),
-                     p.getNome(),
-                     p.getRg()!=null?p.getRg():"",
-                     p.getCpf()!=null?p.getCpf():""
-                 });
-             }            
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problema de conectividade!");
         }
     }
     
@@ -234,10 +238,14 @@ public class PesquisaPaciente extends javax.swing.JDialog {
 
     private void tableBuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBuscaMouseClicked
         if (evt.getClickCount() == 2){
-            long codPaciente = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
-            Paciente p = daoPaciente.getById(codPaciente);
-            this.pacienteSelecionado = p;
-            dispose();
+            try{
+                long codPaciente = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
+                Paciente p = daoPaciente.getById(codPaciente);
+                this.pacienteSelecionado = p;
+                dispose();
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conexão!");
+            }
         }
     }//GEN-LAST:event_tableBuscaMouseClicked
 
@@ -256,46 +264,6 @@ public class PesquisaPaciente extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PesquisaPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PesquisaPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PesquisaPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PesquisaPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                PesquisaPaciente dialog = new PesquisaPaciente(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TextPesquisa;
     private javax.swing.JButton jButton1;

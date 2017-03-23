@@ -340,16 +340,20 @@ public class Login extends javax.swing.JFrame {
         if (textAmbulatorios.getSelectedItem()==null){
            JOptionPane.showMessageDialog(null, "Inforrme o Ambulatório");
         }else{
-            Usuario usuario = daoUsuario.login(TextLogin.getText().trim(), TextSenha.getText().trim());
-            if (usuario != null){
-                DadosGlobais.ambulatorio = (Ambulatorio) textAmbulatorios.getSelectedItem();
-                DadosGlobais.usuarioLogado = usuario;
-                Principal principal = new Principal();
-                principal.setVisible(true);
-                principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                dispose();
-            }else{
-                JOptionPane.showMessageDialog(null, "Acesso Negado!");
+            try{
+                Usuario usuario = daoUsuario.login(TextLogin.getText().trim(), TextSenha.getText().trim());
+                if (usuario != null){
+                    DadosGlobais.ambulatorio = (Ambulatorio) textAmbulatorios.getSelectedItem();
+                    DadosGlobais.usuarioLogado = usuario;
+                    Principal principal = new Principal();
+                    principal.setVisible(true);
+                    principal.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Acesso Negado!");
+                }
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conectividade!");
             }
         }
     }

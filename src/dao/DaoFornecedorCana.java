@@ -23,11 +23,11 @@ public class DaoFornecedorCana extends Dao<FornecedorCana>{
         super();
     }
 
-    public FornecedorCana getById(Long Id) {
+    public FornecedorCana getById(Long Id) throws Exception{
         return super.getById(FornecedorCana.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public List<FornecedorCana> listar() {
+    public List<FornecedorCana> listar() throws Exception{
         return super.listar(FornecedorCana.class); //To change body of generated methods, choose Tools | Templates.
     }
     

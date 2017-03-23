@@ -24,12 +24,12 @@ public class DaoAmbulatorio extends Dao<Ambulatorio>{
         super();
     }
 
-    public List<Ambulatorio> listar() {
+    public List<Ambulatorio> listar() throws Exception{
         return super.listar(Ambulatorio.class); //To change body of generated methods, choose Tools | Templates.
     }
 
     
-    public Ambulatorio getById(Long Id) {
+    public Ambulatorio getById(Long Id) throws Exception{
         return super.getById(Ambulatorio.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
     

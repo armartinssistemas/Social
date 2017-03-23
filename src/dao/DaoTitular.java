@@ -23,11 +23,11 @@ public class DaoTitular extends Dao<Titular>{
         super();
     }
     
-    public Titular getById(Long Id) {
+    public Titular getById(Long Id) throws Exception{
         return super.getById(Titular.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public List<Titular> listar() {
+    public List<Titular> listar() throws Exception{
         return super.listar(Titular.class); //To change body of generated methods, choose Tools | Templates.
     }
     

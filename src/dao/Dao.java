@@ -28,7 +28,7 @@ public abstract class Dao<T> {
         this.session = getSession();
     }    
     
-    public void delete(T obj){
+    public void delete(T obj) throws Exception{
         Transaction transaction = session.beginTransaction();
         try{
           session.delete(obj);
@@ -39,7 +39,7 @@ public abstract class Dao<T> {
         }         
     }
 
-    public void insert(T obj){
+    public void insert(T obj) throws Exception{
         Transaction transaction = session.beginTransaction();
         try{
           session.persist(obj);
@@ -50,7 +50,7 @@ public abstract class Dao<T> {
         }
     }
 
-    public void update(T obj){
+    public void update(T obj) throws Exception{
          Transaction transaction = session.beginTransaction();
          try{
            session.merge(obj);
@@ -61,14 +61,14 @@ public abstract class Dao<T> {
         }        
     }
     
-    public T getById(Class<T> clazz, Long Id){
+    public T getById(Class<T> clazz, Long Id) throws Exception{
         Transaction transaction = session.beginTransaction();
         T obj = (T) session.get(clazz, Id);
         transaction.commit();
         return obj;
     }
     
-    public List<T> listar(Class<T> clazz){
+    public List<T> listar(Class<T> clazz) throws Exception{
         Transaction transaction = session.beginTransaction();
         try{
           List<T> lista = session.createCriteria(clazz).list();
@@ -80,20 +80,13 @@ public abstract class Dao<T> {
         }
     }
     
-    public static Session getSession(){
-        if (session != null && session.isConnected())
-            return session;
-        else{
-            try{
+    public static Session getSession() throws Exception{
+            if (session != null && session.isDirty())
+                return session;
+            else{
                 session = HibernateUtil.getSessionFactory().openSession();
-            }catch(Exception ex){
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Problema de comunicação!");
-                System.exit(0);
-            }finally{
                 return session;
             }
-        }
     }
     
     public static void closeSession(){

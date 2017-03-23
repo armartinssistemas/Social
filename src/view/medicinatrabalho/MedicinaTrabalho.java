@@ -72,16 +72,20 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(null, "Paciente não encontrado");
         }
-        RecolhimentoDiario recolhimentoDiario = daoRecolhimentoDiario.getByIDFornecedor(p.getFornecedorCana().getIDFornecedor());
-        if (recolhimentoDiario != null && recolhimentoDiario.autorizaAtendimento()){
-            barraProgracao.setMaximum(recolhimentoDiario.getMaxUsoRecolhimento());
-            barraProgracao.setMinimum(0);
-            int porcentagem = recolhimentoDiario.getPorcentagemUso();
-            barraProgracao.setValue(porcentagem);
-            LabelStatus.setText("Status: "+recolhimentoDiario.getMenssagemStatus());
-        }else{
-            TextIDPACIENTE.setText("");
-        }        
+        try{
+            RecolhimentoDiario recolhimentoDiario = daoRecolhimentoDiario.getByIDFornecedor(p.getFornecedorCana().getIDFornecedor());
+            if (recolhimentoDiario != null && recolhimentoDiario.autorizaAtendimento()){
+                barraProgracao.setMaximum(recolhimentoDiario.getMaxUsoRecolhimento());
+                barraProgracao.setMinimum(0);
+                int porcentagem = recolhimentoDiario.getPorcentagemUso();
+                barraProgracao.setValue(porcentagem);
+                LabelStatus.setText("Status: "+recolhimentoDiario.getMenssagemStatus());
+            }else{
+                TextIDPACIENTE.setText("");
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problema de conectividade!");
+        }
     }
     
     public void modoNaoEdicao(){
@@ -180,32 +184,36 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     }
     
     public void pesquisar(){
-        if (!TextPesquisa.getText().equals("")){
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            List<GuiaMedicinaTrabalho> lista = new ArrayList<>();
-            if (radioNumeroGuia.isSelected()){
-                lista = daoGuiMedicinaTrabalho.listarPorNumero(Long.parseLong(TextPesquisa.getText()));
-            }else if (RadioPaciente.isSelected()){
-                lista = daoGuiMedicinaTrabalho.listarPorPacienteNome(TextPesquisa.getText());
-            }else if (radioData.isSelected()){
-                try {
-                    lista = daoGuiMedicinaTrabalho.listarPorData(sdf.parse(TextPesquisa.getText()));
-                } catch (ParseException ex) {
-                    Logger.getLogger(MedicinaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            if (!TextPesquisa.getText().equals("")){
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                List<GuiaMedicinaTrabalho> lista = new ArrayList<>();
+                if (radioNumeroGuia.isSelected()){
+                    lista = daoGuiMedicinaTrabalho.listarPorNumero(Long.parseLong(TextPesquisa.getText()));
+                }else if (RadioPaciente.isSelected()){
+                    lista = daoGuiMedicinaTrabalho.listarPorPacienteNome(TextPesquisa.getText());
+                }else if (radioData.isSelected()){
+                    try {
+                        lista = daoGuiMedicinaTrabalho.listarPorData(sdf.parse(TextPesquisa.getText()));
+                    } catch (ParseException ex) {
+                        Logger.getLogger(MedicinaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
+
+                Collections.sort(lista);
+                DefaultTableModel tableModel = (DefaultTableModel) tableBusca.getModel();
+                tableModel.setNumRows(0);
+                for(GuiaMedicinaTrabalho m: lista){
+                     tableModel.addRow(new String[]{
+                         m.getId().toString(),
+                         m.getData()!=null?sdf.format(m.getData()):"",
+                         m.getAmbulatorio().getDescricao()!=null?m.getAmbulatorio().getDescricao():"", 
+                         m.getPaciente()!=null && m.getPaciente().getNome()!=null?m.getPaciente().getNome():""});
+                 }
+                 //tableBusca = new JTable(tableModel);
             }
-            
-            Collections.sort(lista);
-            DefaultTableModel tableModel = (DefaultTableModel) tableBusca.getModel();
-            tableModel.setNumRows(0);
-            for(GuiaMedicinaTrabalho m: lista){
-                 tableModel.addRow(new String[]{
-                     m.getId().toString(),
-                     m.getData()!=null?sdf.format(m.getData()):"",
-                     m.getAmbulatorio().getDescricao()!=null?m.getAmbulatorio().getDescricao():"", 
-                     m.getPaciente()!=null && m.getPaciente().getNome()!=null?m.getPaciente().getNome():""});
-             }
-             //tableBusca = new JTable(tableModel);
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Problema de conectividade!");
         }
     }
     
@@ -838,42 +846,44 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         }else if (TextPaciente.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Informe o Paciente");
         }else{
-            FornecedorCana fornecedorCana = daoFornecedorCana.getById(Long.parseLong(TextIDFORNECEDOR.getText()));
-            Paciente paciente = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
-            if (TextID.getText().equals("NOVO")){
-                GuiaMedicinaTrabalho guiaMedicinaTrabalho = new GuiaMedicinaTrabalho();
-                guiaMedicinaTrabalho.setAmbulatorio(DadosGlobais.ambulatorio);
-                guiaMedicinaTrabalho.setUsuarioCadastro(DadosGlobais.usuarioLogado);
-                guiaMedicinaTrabalho.setFornecedorCana(fornecedorCana);
-                guiaMedicinaTrabalho.setPaciente(paciente);
-                guiaMedicinaTrabalho.setTipoMedicinaTrabalho((TipoMedicinaTrabalho)TextTipoMedicina.getSelectedItem());
-                guiaMedicinaTrabalho.setData(TextData.getDate());
-                daoGuiMedicinaTrabalho.insert(guiaMedicinaTrabalho);
+            try{
+                FornecedorCana fornecedorCana = daoFornecedorCana.getById(Long.parseLong(TextIDFORNECEDOR.getText()));
+                Paciente paciente = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
+                if (TextID.getText().equals("NOVO")){
+                    GuiaMedicinaTrabalho guiaMedicinaTrabalho = new GuiaMedicinaTrabalho();
+                    guiaMedicinaTrabalho.setAmbulatorio(DadosGlobais.ambulatorio);
+                    guiaMedicinaTrabalho.setUsuarioCadastro(DadosGlobais.usuarioLogado);
+                    guiaMedicinaTrabalho.setFornecedorCana(fornecedorCana);
+                    guiaMedicinaTrabalho.setPaciente(paciente);
+                    guiaMedicinaTrabalho.setTipoMedicinaTrabalho((TipoMedicinaTrabalho)TextTipoMedicina.getSelectedItem());
+                    guiaMedicinaTrabalho.setData(TextData.getDate());
+                    daoGuiMedicinaTrabalho.insert(guiaMedicinaTrabalho);
 
-                modoNaoEdicao();
-                limpar();
-                
-                if (guiaMedicinaTrabalho.getId()!=null){
-                    JOptionPane.showMessageDialog(null, "Guia registrada com sucesso!");
-                    preencheTela(guiaMedicinaTrabalho);
+                    modoNaoEdicao();
+                    limpar();
+
+                    if (guiaMedicinaTrabalho.getId()!=null){
+                        JOptionPane.showMessageDialog(null, "Guia registrada com sucesso!");
+                        preencheTela(guiaMedicinaTrabalho);
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Problema ao inserir registro!");
+                    }                
                 }else{
-                    JOptionPane.showMessageDialog(null, "Problema ao inserir registro!");
-                }                
-            }else{
-                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
-                guiaMedicinaTrabalho.setAmbulatorio(DadosGlobais.ambulatorio);
-                guiaMedicinaTrabalho.setUsuarioCadastro(DadosGlobais.usuarioLogado);
-                guiaMedicinaTrabalho.setFornecedorCana(fornecedorCana);
-                guiaMedicinaTrabalho.setPaciente(paciente);
-                guiaMedicinaTrabalho.setTipoMedicinaTrabalho((TipoMedicinaTrabalho)TextTipoMedicina.getSelectedItem());
-                guiaMedicinaTrabalho.setData(TextData.getDate());
-                daoGuiMedicinaTrabalho.insert(guiaMedicinaTrabalho);
-                daoGuiMedicinaTrabalho.update(guiaMedicinaTrabalho);
-                JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
-                modoNaoEdicao();
+                    GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+                    guiaMedicinaTrabalho.setAmbulatorio(DadosGlobais.ambulatorio);
+                    guiaMedicinaTrabalho.setUsuarioCadastro(DadosGlobais.usuarioLogado);
+                    guiaMedicinaTrabalho.setFornecedorCana(fornecedorCana);
+                    guiaMedicinaTrabalho.setPaciente(paciente);
+                    guiaMedicinaTrabalho.setTipoMedicinaTrabalho((TipoMedicinaTrabalho)TextTipoMedicina.getSelectedItem());
+                    guiaMedicinaTrabalho.setData(TextData.getDate());
+                    daoGuiMedicinaTrabalho.insert(guiaMedicinaTrabalho);
+                    daoGuiMedicinaTrabalho.update(guiaMedicinaTrabalho);
+                    JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+                    modoNaoEdicao();
+                }
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problemas de conexão!");
             }
-            
-
         }
     }//GEN-LAST:event_btSalvarActionPerformed
 
@@ -911,13 +921,17 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
     private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
         if (!TextID.getText().equals("NOVO") && TextData.getDate()!=null){
-            int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja excluir?","Atenção!",JOptionPane.YES_NO_OPTION);
-            if(dialogResult == JOptionPane.YES_OPTION){
-                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
-                daoGuiMedicinaTrabalho.delete(guiaMedicinaTrabalho);
-                limpar();
-                TextID.setText("");
-                JOptionPane.showMessageDialog(null, "Guia excluída com sucesso!");
+            try{
+                int dialogResult = JOptionPane.showConfirmDialog (null, "Deseja excluir?","Atenção!",JOptionPane.YES_NO_OPTION);
+                if(dialogResult == JOptionPane.YES_OPTION){
+                    GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+                    daoGuiMedicinaTrabalho.delete(guiaMedicinaTrabalho);
+                    limpar();
+                    TextID.setText("");
+                    JOptionPane.showMessageDialog(null, "Guia excluída com sucesso!");
+                }
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conexão!");
             }
         }
     }//GEN-LAST:event_btExcluirActionPerformed
@@ -925,9 +939,12 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private void TextIDPACIENTEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDPACIENTEKeyPressed
         if(evt.getKeyCode() == evt.VK_ENTER) {
             if (!TextIDPACIENTE.equals("")){
-                Paciente p = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
-                buscaPaciente(p);
-                
+                try{
+                    Paciente p = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
+                    buscaPaciente(p);
+                }catch(Exception ex){
+                    JOptionPane.showMessageDialog(null, "Problema de conexao!");
+                }
             }
         }else if(evt.getKeyCode() == evt.VK_F2) {
             Paciente p = PesquisaPaciente.buscaPaciente(this);
@@ -945,11 +962,15 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
     private void TextIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TextIDKeyPressed
         if (evt.getKeyCode() == evt.VK_ENTER && !TextID.getText().equals("")){
-            GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
-            if (guiaMedicinaTrabalho!=null){
-                preencheTela(guiaMedicinaTrabalho);
-            }else{
-                JOptionPane.showMessageDialog(null, "Guia não encontrada!");
+            try{
+                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+                if (guiaMedicinaTrabalho!=null){
+                    preencheTela(guiaMedicinaTrabalho);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Guia não encontrada!");
+                }
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conexão!");
             }
         }else{
             limpar();
@@ -973,11 +994,15 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     private void tableBuscaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableBuscaMouseClicked
        if (evt.getClickCount() == 2) {
           if (tableBusca.getRowCount() > 0){
-              Long idGuia = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
-              GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(idGuia);
-              preencheTela(guiaMedicinaTrabalho);
-              panelTab.setSelectedIndex(0);
-              modoNaoEdicao();
+              try{
+                Long idGuia = Long.parseLong(tableBusca.getValueAt(tableBusca.getSelectedRow(), 0).toString());
+                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(idGuia);
+                preencheTela(guiaMedicinaTrabalho);
+                panelTab.setSelectedIndex(0);
+                modoNaoEdicao();
+              }catch(Exception ex){
+                  JOptionPane.showMessageDialog(null, "Problema de conexão!");
+              }
           }
        }
     }//GEN-LAST:event_tableBuscaMouseClicked
@@ -991,27 +1016,31 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
     private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
         if (TextData.getDate()!=null && !TextID.getText().equals("NOVO")){
-            GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Map<String,Object> params = new HashMap<String,Object>();
-            params.put("naso", guiaMedicinaTrabalho.getId().toString());
-            params.put("empregador", guiaMedicinaTrabalho.getPaciente().getFornecedorCana().getNome());
-            params.put("municipio",guiaMedicinaTrabalho.getFornecedorCana().getCidade()!=null?guiaMedicinaTrabalho.getFornecedorCana().getCidade().getNome():"");
-            params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao());
-            params.put("prontuario",guiaMedicinaTrabalho.getPaciente().getId().toString());
-            params.put("nome",guiaMedicinaTrabalho.getPaciente().getNome());
-            params.put("datanascimento",guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":sdf.format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
-            params.put("idade",guiaMedicinaTrabalho.getPaciente().getIdade()+"");
-            params.put("rg",guiaMedicinaTrabalho.getPaciente().getRg()==null?"":guiaMedicinaTrabalho.getPaciente().getRg());
-            params.put("carteira",guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
-            params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
-            params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
-            params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
-            params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
-            
-            GeraRelatorio geraRelatorio = new GeraRelatorio();
-            geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
+            try{
+                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Map<String,Object> params = new HashMap<String,Object>();
+                params.put("naso", guiaMedicinaTrabalho.getId().toString());
+                params.put("empregador", guiaMedicinaTrabalho.getPaciente().getFornecedorCana().getNome());
+                params.put("municipio",guiaMedicinaTrabalho.getFornecedorCana().getCidade()!=null?guiaMedicinaTrabalho.getFornecedorCana().getCidade().getNome():"");
+                params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao());
+                params.put("prontuario",guiaMedicinaTrabalho.getPaciente().getId().toString());
+                params.put("nome",guiaMedicinaTrabalho.getPaciente().getNome());
+                params.put("datanascimento",guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":sdf.format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
+                params.put("idade",guiaMedicinaTrabalho.getPaciente().getIdade()+"");
+                params.put("rg",guiaMedicinaTrabalho.getPaciente().getRg()==null?"":guiaMedicinaTrabalho.getPaciente().getRg());
+                params.put("carteira",guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
+                params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
+                params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
+                params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
+                params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
+
+                GeraRelatorio geraRelatorio = new GeraRelatorio();
+                geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conexão!");
+            }
         }else{
             JOptionPane.showMessageDialog(null, "Escolhe uma guia para ser impressa!");
         }
@@ -1021,29 +1050,33 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     String globalMudaNome = "";
     private void btEmitirRelatórioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmitirRelatórioActionPerformed
         if (TextData.getDate()!=null && !TextID.getText().equals("NOVO")){
-            String nome = JOptionPane.showInputDialog("Informe o nome do Paciente",globalMudaNome);
-            globalMudaNome = nome;
-            GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Map<String,Object> params = new HashMap<String,Object>();
-            params.put("naso", guiaMedicinaTrabalho.getId().toString());
-            params.put("empregador", nome);
-            params.put("municipio",guiaMedicinaTrabalho.getFornecedorCana().getCidade()!=null?guiaMedicinaTrabalho.getFornecedorCana().getCidade().getNome():"");
-            params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao());
-            params.put("prontuario",guiaMedicinaTrabalho.getPaciente().getId().toString());
-            params.put("nome",guiaMedicinaTrabalho.getPaciente().getNome());
-            params.put("datanascimento",guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":sdf.format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
-            params.put("idade",guiaMedicinaTrabalho.getPaciente().getIdade()+"");
-            params.put("rg",guiaMedicinaTrabalho.getPaciente().getRg()==null?"":guiaMedicinaTrabalho.getPaciente().getRg());
-            params.put("carteira",guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
-            params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
-            params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
-            params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
-            params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
-            
-            GeraRelatorio geraRelatorio = new GeraRelatorio();
-            geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
+            try{
+                String nome = JOptionPane.showInputDialog("Informe o nome do Paciente",globalMudaNome);
+                globalMudaNome = nome;
+                GuiaMedicinaTrabalho guiaMedicinaTrabalho = daoGuiMedicinaTrabalho.getById(Long.parseLong(TextID.getText()));
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Map<String,Object> params = new HashMap<String,Object>();
+                params.put("naso", guiaMedicinaTrabalho.getId().toString());
+                params.put("empregador", nome);
+                params.put("municipio",guiaMedicinaTrabalho.getFornecedorCana().getCidade()!=null?guiaMedicinaTrabalho.getFornecedorCana().getCidade().getNome():"");
+                params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao());
+                params.put("prontuario",guiaMedicinaTrabalho.getPaciente().getId().toString());
+                params.put("nome",guiaMedicinaTrabalho.getPaciente().getNome());
+                params.put("datanascimento",guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":sdf.format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
+                params.put("idade",guiaMedicinaTrabalho.getPaciente().getIdade()+"");
+                params.put("rg",guiaMedicinaTrabalho.getPaciente().getRg()==null?"":guiaMedicinaTrabalho.getPaciente().getRg());
+                params.put("carteira",guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getNumeroCarteiraTrabalho());
+                params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
+                params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
+                params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
+                params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
+
+                GeraRelatorio geraRelatorio = new GeraRelatorio();
+                geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conexão!");
+            }
         }else{
             JOptionPane.showMessageDialog(null, "Escolhe uma guia para ser impressa!");
         }

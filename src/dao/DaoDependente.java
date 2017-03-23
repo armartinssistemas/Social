@@ -23,11 +23,11 @@ public class DaoDependente extends Dao<Dependente>{
         super();
     }
 
-    public Dependente getById(Long Id) {
+    public Dependente getById(Long Id) throws Exception{
         return super.getById(Dependente.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public List<Dependente> listar() {
+    public List<Dependente> listar() throws Exception{
         return super.listar(Dependente.class); //To change body of generated methods, choose Tools | Templates.
     }
     

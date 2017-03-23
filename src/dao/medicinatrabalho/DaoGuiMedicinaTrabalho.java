@@ -27,15 +27,15 @@ public class DaoGuiMedicinaTrabalho extends Dao<GuiaMedicinaTrabalho>{
     }
 
     
-    public List<GuiaMedicinaTrabalho> listar() {
+    public List<GuiaMedicinaTrabalho> listar() throws Exception{
         return super.listar(GuiaMedicinaTrabalho.class); 
     }
     
-    public GuiaMedicinaTrabalho getById(Long Id) {
+    public GuiaMedicinaTrabalho getById(Long Id) throws Exception{
         return super.getById(GuiaMedicinaTrabalho.class, Id); 
     }
     
-    public List<GuiaMedicinaTrabalho> listarPorPacienteNome(String nome){
+    public List<GuiaMedicinaTrabalho> listarPorPacienteNome(String nome) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         List<GuiaMedicinaTrabalho> lista = new ArrayList<>();
@@ -53,7 +53,7 @@ public class DaoGuiMedicinaTrabalho extends Dao<GuiaMedicinaTrabalho>{
         }
     }
     
-    public List<GuiaMedicinaTrabalho> listarPorData(Date data){
+    public List<GuiaMedicinaTrabalho> listarPorData(Date data) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         List<GuiaMedicinaTrabalho> lista = null;
@@ -72,7 +72,7 @@ public class DaoGuiMedicinaTrabalho extends Dao<GuiaMedicinaTrabalho>{
         }
     }
     
-    public List<GuiaMedicinaTrabalho> listarPorNumero(Long numero){
+    public List<GuiaMedicinaTrabalho> listarPorNumero(Long numero) throws Exception{
                         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         List<GuiaMedicinaTrabalho> lista = null;

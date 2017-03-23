@@ -23,11 +23,11 @@ public class DaoTipoMedicinaTrabalho extends Dao<TipoMedicinaTrabalho>{
         super();
     }
 
-    public TipoMedicinaTrabalho getById(Long Id) {
+    public TipoMedicinaTrabalho getById(Long Id) throws Exception{
         return super.getById(TipoMedicinaTrabalho.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public List<TipoMedicinaTrabalho> listar() {
+    public List<TipoMedicinaTrabalho> listar() throws Exception{
         return super.listar(TipoMedicinaTrabalho.class); //To change body of generated methods, choose Tools | Templates.
     }
     

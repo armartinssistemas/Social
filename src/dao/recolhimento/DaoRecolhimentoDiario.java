@@ -24,15 +24,15 @@ public DaoRecolhimentoDiario(Session session) {
         super();
     }
 
-    public RecolhimentoDiario getById(Long Id) {
+    public RecolhimentoDiario getById(Long Id) throws Exception{
         return super.getById(RecolhimentoDiario.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
     
-    public List<RecolhimentoDiario> listar() {
+    public List<RecolhimentoDiario> listar() throws Exception{
         return super.listar(RecolhimentoDiario.class); //To change body of generated methods, choose Tools | Templates.
     }    
     
-    public RecolhimentoDiario getByIDFornecedor(Long Id){
+    public RecolhimentoDiario getByIDFornecedor(Long Id) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         RecolhimentoDiario recolhimentoDiario = null;

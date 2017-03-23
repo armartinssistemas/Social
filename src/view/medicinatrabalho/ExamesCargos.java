@@ -174,13 +174,17 @@ public class ExamesCargos extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         if (TextFuncoes.getSelectedItem()!=null){
-            FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
-            funcaoTrabalhador.setAgagressores(TextAgentesAgressores.getText());
-            funcaoTrabalhador.setExcomplementares(TextExamesComplementares.getText());
-            
-            daoFuncaoTrabalhador.update(funcaoTrabalhador);
-            
-            JOptionPane.showMessageDialog(null, "Registro salvo");
+            try{
+                FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
+                funcaoTrabalhador.setAgagressores(TextAgentesAgressores.getText());
+                funcaoTrabalhador.setExcomplementares(TextExamesComplementares.getText());
+
+                daoFuncaoTrabalhador.update(funcaoTrabalhador);
+
+                JOptionPane.showMessageDialog(null, "Registro salvo");
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(null, "Problema de conexão!");
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

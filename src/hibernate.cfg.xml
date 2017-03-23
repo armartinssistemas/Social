@@ -4,9 +4,10 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://armartins.cocvwvacd5gj.sa-east-1.rds.amazonaws.com/</property>
+    <property name="hibernate.connection.url">jdbc:mysql://armartins.cocvwvacd5gj.sa-east-1.rds.amazonaws.com?autoReconnect=true</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root1262</property>
+    <property name="hibernate.connection.autoReconnec">true</property>
     <property name="show_sql">true</property>
   </session-factory>
 </hibernate-configuration>

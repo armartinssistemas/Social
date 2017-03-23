@@ -26,7 +26,7 @@ public class DaoUsuario extends Dao<Usuario>{
         super();
     }
     
-    public  Usuario login(String usuario, String senha){
+    public  Usuario login(String usuario, String senha) throws Exception{
         Session session = getSession();
         Transaction transaction = session.beginTransaction();
         Object obj = null;
@@ -41,16 +41,15 @@ public class DaoUsuario extends Dao<Usuario>{
         }catch(Exception e){
           transaction.rollback();
           throw e;
-        }finally{
-            return (Usuario) obj;
         }
+        return (Usuario) obj;
     }
     
-    public List<Usuario> listar() {
+    public List<Usuario> listar() throws Exception{
         return super.listar(Usuario.class); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Usuario getById(Long Id) {
+    public Usuario getById(Long Id) throws Exception{
         return super.getById(Usuario.class, Id); //To change body of generated methods, choose Tools | Templates.
     }
     
