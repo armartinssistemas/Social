@@ -8,6 +8,7 @@ import java.lang.Class;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import javax.persistence.Entity;
+import javax.swing.JOptionPane;
 import model.Ambulatorio;
 import org.hibernate.exception.JDBCConnectionException;
 
@@ -82,8 +83,17 @@ public abstract class Dao<T> {
     public static Session getSession(){
         if (session != null && session.isConnected())
             return session;
-        else
-            return HibernateUtil.getSessionFactory().openSession();
+        else{
+            try{
+                session = HibernateUtil.getSessionFactory().openSession();
+            }catch(Exception ex){
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Problema de comunicação!");
+                System.exit(0);
+            }finally{
+                return session;
+            }
+        }
     }
     
     public static void closeSession(){
