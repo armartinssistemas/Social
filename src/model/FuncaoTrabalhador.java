@@ -5,13 +5,19 @@
  */
 package model;
 
+import model.medicinatrabalho.ExameComplementar;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -26,8 +32,6 @@ public class FuncaoTrabalhador implements Comparable<FuncaoTrabalhador>{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private String excomplementares;
-    
     private String agagressores;
    
     @Column(length = 50)
@@ -35,6 +39,18 @@ public class FuncaoTrabalhador implements Comparable<FuncaoTrabalhador>{
     
     @OneToMany(mappedBy = "funcaoTrabalhador")
     private List<Paciente> pacientes = new ArrayList<Paciente>();
+    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
+    @JoinTable(name = "medicinatrabalho_cargo_examecomplementar", catalog = "TEOR", 
+            joinColumns = { 
+                    @JoinColumn(name = "idcargo", nullable = false, updatable = false) 
+            },        
+            inverseJoinColumns = { 
+                @JoinColumn(name = "idexamecomplementar", 
+                                    nullable = false, updatable = false) 
+            }
+    )
+    private List<ExameComplementar> examesComplementares = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -70,19 +86,19 @@ public class FuncaoTrabalhador implements Comparable<FuncaoTrabalhador>{
         return this.descricao;
     }
 
-    public String getExcomplementares() {
-        return excomplementares;
-    }
-
-    public void setExcomplementares(String excomplementares) {
-        this.excomplementares = excomplementares;
-    }
-
     public String getAgagressores() {
         return agagressores;
     }
 
     public void setAgagressores(String agagressores) {
         this.agagressores = agagressores;
+    }
+
+    public List<ExameComplementar> getExamesComplementares() {
+        return examesComplementares;
+    }
+
+    public void setExamesComplementares(List<ExameComplementar> examesComplementares) {
+        this.examesComplementares = examesComplementares;
     }
 }

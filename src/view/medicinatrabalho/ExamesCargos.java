@@ -6,11 +6,17 @@
 package view.medicinatrabalho;
 
 import dao.DaoFuncaoTrabalhador;
+import dao.medicinatrabalho.DaoExameComplementar;
+import java.util.ArrayList;
+import model.medicinatrabalho.ExameComplementar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.FuncaoTrabalhador;
 
 /**
@@ -23,6 +29,9 @@ public class ExamesCargos extends javax.swing.JFrame {
      * Creates new form ExamesCargos
      */
     private DaoFuncaoTrabalhador daoFuncaoTrabalhador;
+    
+    private List<Long> adicionados = new ArrayList<>();
+    private List<Long> excluidos = new ArrayList<>();
     
     public ExamesCargos() {
         initComponents();
@@ -37,6 +46,12 @@ public class ExamesCargos extends javax.swing.JFrame {
             lista.add(0, null);
             //Adiciona lista no campo de texto
             TextFuncoes.setModel(new DefaultComboBoxModel(lista.toArray()));
+            
+            DaoExameComplementar daoExameComplementar = new DaoExameComplementar();
+            List<ExameComplementar> listaExame = daoExameComplementar.listar();
+            Collections.sort(listaExame);
+            listaExame.add(0,null);
+            TextListaExameComplementar.setModel(new DefaultComboBoxModel(listaExame.toArray()));
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, "Problem de conexão");
         }
@@ -55,15 +70,20 @@ public class ExamesCargos extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        brSalvar = new javax.swing.JButton();
         TextFuncoes = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         TextAgentesAgressores = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        TextExamesComplementares = new javax.swing.JTextArea();
         jButton2 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        TabelaExameComplementar = new javax.swing.JTable();
+        TextListaExameComplementar = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        btIncluirExameComplementar = new javax.swing.JButton();
+        btExcluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Exames Complementares");
 
         jPanel1.setBackground(new java.awt.Color(206, 234, 255));
 
@@ -76,11 +96,11 @@ public class ExamesCargos extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Exames Complementares:");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jButton1.setText("SALVAR");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        brSalvar.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        brSalvar.setText("SALVAR");
+        brSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                brSalvarActionPerformed(evt);
             }
         });
 
@@ -94,10 +114,6 @@ public class ExamesCargos extends javax.swing.JFrame {
         TextAgentesAgressores.setRows(5);
         jScrollPane1.setViewportView(TextAgentesAgressores);
 
-        TextExamesComplementares.setColumns(20);
-        TextExamesComplementares.setRows(5);
-        jScrollPane2.setViewportView(TextExamesComplementares);
-
         jButton2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jButton2.setText("Limpar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -106,32 +122,66 @@ public class ExamesCargos extends javax.swing.JFrame {
             }
         });
 
+        TabelaExameComplementar.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Exame Complementar"
+            }
+        ));
+        jScrollPane3.setViewportView(TabelaExameComplementar);
+        if (TabelaExameComplementar.getColumnModel().getColumnCount() > 0) {
+            TabelaExameComplementar.getColumnModel().getColumn(0).setMinWidth(60);
+            TabelaExameComplementar.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
+
+        jLabel4.setText("Exame Complementar");
+
+        btIncluirExameComplementar.setText("Incluir");
+        btIncluirExameComplementar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btIncluirExameComplementarActionPerformed(evt);
+            }
+        });
+
+        btExcluir.setText("Excluir");
+        btExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btExcluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel2)
-                        .addGap(245, 434, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(brSalvar))
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
-                            .addComponent(jScrollPane2)
-                            .addComponent(jScrollPane1)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addComponent(TextFuncoes, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(TextListaExameComplementar, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btIncluirExameComplementar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -148,13 +198,20 @@ public class ExamesCargos extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(jLabel3)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(TextListaExameComplementar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btIncluirExameComplementar)
+                    .addComponent(btExcluir))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(brSalvar)
                     .addComponent(jButton2))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -172,38 +229,105 @@ public class ExamesCargos extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void brSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brSalvarActionPerformed
         if (TextFuncoes.getSelectedItem()!=null){
             try{
                 FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
                 funcaoTrabalhador.setAgagressores(TextAgentesAgressores.getText());
-                funcaoTrabalhador.setExcomplementares(TextExamesComplementares.getText());
-
+                for(Long Id: excluidos){
+                    funcaoTrabalhador.getExamesComplementares().remove(new DaoExameComplementar().getById(Id));
+                }
+                
+                for(Long Id: adicionados){
+                    ExameComplementar e = new DaoExameComplementar().getById(Id);
+                    if (!funcaoTrabalhador.getExamesComplementares().contains(e))
+                        funcaoTrabalhador.getExamesComplementares().add(e);
+                }
                 daoFuncaoTrabalhador.update(funcaoTrabalhador);
-
                 JOptionPane.showMessageDialog(null, "Registro salvo");
             }catch(Exception ex){
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Problema de conexão!");
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_brSalvarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        TextAgentesAgressores.setText("");
-        TextExamesComplementares.setText("");
-        TextFuncoes.setSelectedItem(null);
+        try {
+            if(TextFuncoes.getSelectedItem()!=null){
+                TextAgentesAgressores.setText("");
+                TextListaExameComplementar.setSelectedItem(null);
+                TextFuncoes.setSelectedItem(null);
+
+                DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
+                tableModel.setNumRows(0);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ExamesCargos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void TextFuncoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_TextFuncoesItemStateChanged
         if (TextFuncoes.getSelectedItem()!=null){
-            FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
-            TextExamesComplementares.setText(funcaoTrabalhador.getExcomplementares()==null?"":funcaoTrabalhador.getExcomplementares());
-            TextAgentesAgressores.setText(funcaoTrabalhador.getAgagressores()==null?"":funcaoTrabalhador.getAgagressores());
+            try{
+                adicionados.clear();
+                FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
+                DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
+                tableModel.setNumRows(0);
+                TabelaExameComplementar.getColumnModel().getColumn(0).setPreferredWidth(10);
+                List<ExameComplementar> lista = funcaoTrabalhador.getExamesComplementares();
+                Collections.sort(lista);
+                for(ExameComplementar e: funcaoTrabalhador.getExamesComplementares()){
+                     tableModel.addRow(new String[]{
+                             e.getId().toString(),
+                             e.getDescricao()});
+                }
+
+                TextAgentesAgressores.setText(funcaoTrabalhador.getAgagressores()==null?"":funcaoTrabalhador.getAgagressores());
+            }catch(Exception ex){
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Problema de Conexão!");
+            }
         }else{
             TextAgentesAgressores.setText("");
-            TextExamesComplementares.setText("");
         }
     }//GEN-LAST:event_TextFuncoesItemStateChanged
+
+    private void btIncluirExameComplementarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncluirExameComplementarActionPerformed
+        if (TextFuncoes.getSelectedItem() !=null && TextListaExameComplementar.getSelectedItem()!=null){
+            FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
+            ExameComplementar exameComplementar = (ExameComplementar) TextListaExameComplementar.getSelectedItem();
+            
+
+            
+            if (!adicionados.contains(exameComplementar.getId())){
+                adicionados.add(exameComplementar.getId());
+                excluidos.remove(exameComplementar.getId());
+                
+                DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
+                
+                tableModel.addRow(new String[]{
+                exameComplementar.getId().toString(),
+                exameComplementar.getDescricao()});    
+                
+            }
+        }
+    }//GEN-LAST:event_btIncluirExameComplementarActionPerformed
+
+    private void btExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btExcluirActionPerformed
+        try {
+            if (TabelaExameComplementar.getSelectedRow() > -1){
+                ExameComplementar exameComplementar = new DaoExameComplementar().getById(Long.parseLong(TabelaExameComplementar.getValueAt(TabelaExameComplementar.getSelectedRow(), 0).toString()));
+                excluidos.add(exameComplementar.getId());
+                adicionados.remove(exameComplementar.getId());
+                ((DefaultTableModel)TabelaExameComplementar.getModel()).removeRow(TabelaExameComplementar.getSelectedRow());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Problema de Conexão!");
+        }
+    }//GEN-LAST:event_btExcluirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -241,16 +365,20 @@ public class ExamesCargos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable TabelaExameComplementar;
     private javax.swing.JTextArea TextAgentesAgressores;
-    private javax.swing.JTextArea TextExamesComplementares;
     private javax.swing.JComboBox<String> TextFuncoes;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> TextListaExameComplementar;
+    private javax.swing.JButton brSalvar;
+    private javax.swing.JButton btExcluir;
+    private javax.swing.JButton btIncluirExameComplementar;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }

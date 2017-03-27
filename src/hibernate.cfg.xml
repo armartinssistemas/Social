@@ -9,5 +9,6 @@
     <property name="hibernate.connection.password">root1262</property>
     <property name="hibernate.connection.autoReconnec">true</property>
     <property name="show_sql">true</property>
+    <property name="hibernate.event.merge.entity_copy_observer">allow</property>
   </session-factory>
 </hibernate-configuration>

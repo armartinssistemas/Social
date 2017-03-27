@@ -6,6 +6,7 @@ package util;
  * and open the template in the editor.
  */
 
+import model.medicinatrabalho.ExameComplementar;
 import model.Ambulatorio;
 import model.Cidade;
 import model.Dependente;
@@ -58,10 +59,11 @@ public class HibernateUtil {
                 ac.addAnnotatedClass(FuncaoTrabalhador.class);
                 ac.addAnnotatedClass(Cidade.class);
                 ac.addAnnotatedClass(RecolhimentoDiario.class);
+                ac.addAnnotatedClass(ExameComplementar.class);
                 
                 sessionFactory = ac.configure().buildSessionFactory();
             }catch(Exception ex){
-                throw new Exception();
+                throw ex;
             }
             return sessionFactory;
         }else{

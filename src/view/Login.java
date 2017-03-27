@@ -38,6 +38,7 @@ public class Login extends javax.swing.JFrame {
             ambulatorios.add(0, null);
             textAmbulatorios.setModel(new DefaultComboBoxModel(ambulatorios.toArray()));
         }catch(Exception ex){
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Problema de Conexão!");
             System.exit(0);
         }
@@ -353,6 +354,7 @@ public class Login extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "Acesso Negado!");
                 }
             }catch(Exception ex){
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Problema de conectividade!");
             }
         }

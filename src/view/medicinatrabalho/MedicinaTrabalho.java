@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import model.FornecedorCana;
 import model.Paciente;
+import model.medicinatrabalho.ExameComplementar;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
 import model.medicinatrabalho.TipoMedicinaTrabalho;
 import model.recolhimento.RecolhimentoDiario;
@@ -1024,7 +1025,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 params.put("naso", guiaMedicinaTrabalho.getId().toString());
                 params.put("empregador", guiaMedicinaTrabalho.getPaciente().getFornecedorCana().getNome());
                 params.put("municipio",guiaMedicinaTrabalho.getFornecedorCana().getCidade()!=null?guiaMedicinaTrabalho.getFornecedorCana().getCidade().getNome():"");
-                params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao());
+                params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao()+" em "+sdf.format(guiaMedicinaTrabalho.getData()));
                 params.put("prontuario",guiaMedicinaTrabalho.getPaciente().getId().toString());
                 params.put("nome",guiaMedicinaTrabalho.getPaciente().getNome());
                 params.put("datanascimento",guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":sdf.format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
@@ -1034,7 +1035,14 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
                 params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
                 params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
-                params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
+                String exames = "";
+                for(ExameComplementar e: guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExamesComplementares()){
+                    if (!exames.equals(""))
+                        exames+='\n'+e.getDescricao()+" - "+sdf.format(guiaMedicinaTrabalho.getData());
+                    else
+                        exames+=e.getDescricao()+" - "+sdf.format(guiaMedicinaTrabalho.getData());
+                }
+                params.put("exames",exames);
 
                 GeraRelatorio geraRelatorio = new GeraRelatorio();
                 geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
@@ -1060,7 +1068,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 params.put("naso", guiaMedicinaTrabalho.getId().toString());
                 params.put("empregador", nome);
                 params.put("municipio",guiaMedicinaTrabalho.getFornecedorCana().getCidade()!=null?guiaMedicinaTrabalho.getFornecedorCana().getCidade().getNome():"");
-                params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao());
+                params.put("tipoexame",guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getDescricao()+" em "+sdf.format(guiaMedicinaTrabalho.getData()));
                 params.put("prontuario",guiaMedicinaTrabalho.getPaciente().getId().toString());
                 params.put("nome",guiaMedicinaTrabalho.getPaciente().getNome());
                 params.put("datanascimento",guiaMedicinaTrabalho.getPaciente().getDataNacimento()==null?"":sdf.format(guiaMedicinaTrabalho.getPaciente().getDataNacimento()));
@@ -1070,7 +1078,15 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
                 params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
                 params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
-                params.put("exames",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares() == null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExcomplementares());
+                
+                String exames = "";
+                for(ExameComplementar e: guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExamesComplementares()){
+                    if (!exames.equals(""))
+                        exames+='\n'+e.getDescricao()+" - "+sdf.format(guiaMedicinaTrabalho.getData());
+                    else
+                        exames+=e.getDescricao()+" - "+sdf.format(guiaMedicinaTrabalho.getData());
+                }
+                params.put("exames",exames);
 
                 GeraRelatorio geraRelatorio = new GeraRelatorio();
                 geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");

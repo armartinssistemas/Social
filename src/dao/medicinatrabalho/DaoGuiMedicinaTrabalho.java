@@ -59,7 +59,7 @@ public class DaoGuiMedicinaTrabalho extends Dao<GuiaMedicinaTrabalho>{
         List<GuiaMedicinaTrabalho> lista = null;
         try{
             lista = 
-                    session.createQuery("from GuiaMedicinaTrabalho g where g.data = :data")
+                    session.createQuery("from GuiaMedicinaTrabalho g where date(g.data) = :data")
                     .setDate("data", data)
                     .list();
             transaction.commit();
