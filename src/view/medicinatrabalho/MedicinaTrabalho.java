@@ -73,7 +73,9 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(null, "Paciente não encontrado");
         }
-        try{
+        
+        //Código responsável por verificar se existe recolhimento para fornecedor
+        /*try{
             RecolhimentoDiario recolhimentoDiario = daoRecolhimentoDiario.getByIDFornecedor(p.getFornecedorCana().getIDFornecedor());
             if (recolhimentoDiario != null && recolhimentoDiario.autorizaAtendimento()){
                 barraProgracao.setMaximum(recolhimentoDiario.getMaxUsoRecolhimento());
@@ -82,11 +84,13 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 barraProgracao.setValue(porcentagem);
                 LabelStatus.setText("Status: "+recolhimentoDiario.getMenssagemStatus());
             }else{
+                limparPaciente();
                 TextIDPACIENTE.setText("");
+                JOptionPane.showMessageDialog(null, "Fornecedor "+p.getFornecedorCana().getNome()+" não possui recolhimento!");
             }
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, "Problema de conectividade!");
-        }
+        }*/
     }
     
     public void modoNaoEdicao(){
@@ -944,6 +948,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                     Paciente p = daoPaciente.getById(Long.parseLong(TextIDPACIENTE.getText()));
                     buscaPaciente(p);
                 }catch(Exception ex){
+                    ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Problema de conexao!");
                 }
             }
