@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class TipoMedicinaTrabalho implements Comparable<TipoMedicinaTrabalho>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     
     @Column(length = 50)
     private String descricao;
@@ -31,11 +31,11 @@ public class TipoMedicinaTrabalho implements Comparable<TipoMedicinaTrabalho>{
     @OneToMany(mappedBy = "tipoMedicinaTrabalho")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

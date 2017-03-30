@@ -30,7 +30,10 @@ public class GeraRelatorio {
             frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
             frame.setVisible(true);
         } catch (JRException ex) {
+            ex.printStackTrace();
             Logger.getLogger(MedicinaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
-        }        
+        } catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

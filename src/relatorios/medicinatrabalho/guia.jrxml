@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guia" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55707468-9438-4fb1-a42e-0b591a4acb83">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="196"/>
+	<property name="ireport.y" value="4"/>
 	<parameter name="empregador" class="java.lang.String"/>
 	<parameter name="municipio" class="java.lang.String"/>
 	<parameter name="tipoexame" class="java.lang.String"/>
@@ -58,35 +58,35 @@
 				<text><![CDATA[ATESTADO DE SAÚDE OCUPACIONAL (ASO)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="174" width="80" height="16" uuid="464f1669-4e87-4581-b6e3-4e28511fe060"/>
+				<reportElement x="0" y="217" width="80" height="16" uuid="464f1669-4e87-4581-b6e3-4e28511fe060"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Empregador:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="336" y="174" width="61" height="16" uuid="0f91367f-2d84-4ded-af8a-15ec5c0335f6"/>
+				<reportElement x="336" y="217" width="61" height="16" uuid="0f91367f-2d84-4ded-af8a-15ec5c0335f6"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Município:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="397" y="174" width="143" height="16" uuid="401664a5-6333-4839-bc31-67d032dec224"/>
+				<reportElement x="397" y="217" width="143" height="16" uuid="401664a5-6333-4839-bc31-67d032dec224"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{municipio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="202" width="113" height="20" uuid="1312f24a-26be-4ebf-a837-799d566e671e"/>
+				<reportElement x="0" y="242" width="113" height="20" uuid="1312f24a-26be-4ebf-a837-799d566e671e"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Tipo de Exame:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="113" y="202" width="427" height="20" uuid="77125b5b-6d3c-4e99-8396-53ffcd0c5e72"/>
+				<reportElement x="113" y="242" width="427" height="20" uuid="77125b5b-6d3c-4e99-8396-53ffcd0c5e72"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
@@ -107,175 +107,175 @@
 				<textFieldExpression><![CDATA[$P{prontuario}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="107" width="43" height="16" uuid="7837dea4-4786-4aa2-a62e-393d168c73d6"/>
+				<reportElement x="0" y="115" width="43" height="16" uuid="7837dea4-4786-4aa2-a62e-393d168c73d6"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nome:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="43" y="107" width="512" height="16" uuid="c62c79d8-d17c-42db-b3ca-d0b1778a6b6b"/>
+				<reportElement x="43" y="115" width="512" height="16" uuid="c62c79d8-d17c-42db-b3ca-d0b1778a6b6b"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isUnderline="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{nome}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="141" width="113" height="16" uuid="054224be-b15b-4879-bba7-51fe2ab588e4"/>
+				<reportElement x="0" y="166" width="113" height="16" uuid="054224be-b15b-4879-bba7-51fe2ab588e4"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Data Nascimento:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="113" y="141" width="163" height="16" uuid="9bf33269-d27d-4b83-a57a-da5ed9ced752"/>
+				<reportElement x="113" y="166" width="163" height="16" uuid="9bf33269-d27d-4b83-a57a-da5ed9ced752"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{datanascimento}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="281" y="141" width="40" height="16" uuid="42bb2356-5dae-499a-b81c-e9221b0f94c0"/>
+				<reportElement x="281" y="166" width="40" height="16" uuid="42bb2356-5dae-499a-b81c-e9221b0f94c0"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Idade:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="321" y="141" width="219" height="16" uuid="b98d250e-93c3-41de-83a0-460fea534104"/>
+				<reportElement x="321" y="166" width="219" height="16" uuid="b98d250e-93c3-41de-83a0-460fea534104"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{idade}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="158" width="30" height="16" uuid="a5405c36-4f27-458e-af82-7f2c8eb8b46f"/>
+				<reportElement x="0" y="191" width="30" height="16" uuid="a5405c36-4f27-458e-af82-7f2c8eb8b46f"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[R.G.:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="30" y="158" width="100" height="16" uuid="e18a6d03-6bbe-491d-a0d9-b17546a029dd"/>
+				<reportElement x="30" y="191" width="100" height="16" uuid="e18a6d03-6bbe-491d-a0d9-b17546a029dd"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{rg}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="148" y="158" width="128" height="16" uuid="881b7644-c991-4fed-8c3d-36c45de43506"/>
+				<reportElement x="148" y="191" width="128" height="16" uuid="881b7644-c991-4fed-8c3d-36c45de43506"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Carteira Profissional:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="276" y="158" width="130" height="16" uuid="194d679a-0289-441b-8c40-ca719e9f4041"/>
+				<reportElement x="276" y="191" width="130" height="16" uuid="194d679a-0289-441b-8c40-ca719e9f4041"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{carteira}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="421" y="158" width="40" height="16" uuid="ec38f82a-d740-43ab-927b-b35c8dae73a0"/>
+				<reportElement x="421" y="191" width="40" height="16" uuid="ec38f82a-d740-43ab-927b-b35c8dae73a0"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Série:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="461" y="158" width="79" height="16" uuid="f5debc84-cf5e-4495-9693-33dba7a8e6d6"/>
+				<reportElement x="461" y="191" width="79" height="16" uuid="f5debc84-cf5e-4495-9693-33dba7a8e6d6"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{serie}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="83" y="174" width="238" height="16" uuid="bd317585-e16a-42fe-8831-a0763573df58"/>
+				<reportElement x="83" y="217" width="238" height="16" uuid="bd317585-e16a-42fe-8831-a0763573df58"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{empregador}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="124" width="47" height="16" uuid="29048fd4-59fc-4d69-a2c4-45c7023c2132"/>
+				<reportElement x="0" y="140" width="47" height="16" uuid="29048fd4-59fc-4d69-a2c4-45c7023c2132"/>
 				<textElement>
 					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Função:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="50" y="124" width="505" height="16" uuid="9059bf08-5ee4-48db-b0f1-6d5bcab00518"/>
+				<reportElement x="50" y="140" width="505" height="16" uuid="9059bf08-5ee4-48db-b0f1-6d5bcab00518"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="225" width="540" height="67" uuid="72457431-451e-4d67-9d61-88e233b6f071"/>
+				<reportElement x="0" y="265" width="540" height="67" uuid="72457431-451e-4d67-9d61-88e233b6f071"/>
 				<textElement textAlignment="Justified">
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[Para fins de cumprimento da NR 7 item 7.4.4.3  da portaria nº 24, de 29/12/1994, da Secretaria de Segurança de Trabalho - D.O.U. de 30/12/1994, atestamos que a pessoa acima identificada, submeteu-se aos exames médicos a seguir relacionados atendendo ao dispositivo do artigo 168 da C.L.T.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="294" width="243" height="20" uuid="511cef00-4760-4147-a23b-7f8e49024087"/>
+				<reportElement x="0" y="334" width="243" height="20" uuid="511cef00-4760-4147-a23b-7f8e49024087"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[( ) Apto para a(s) função(ões)  designadas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="315" width="148" height="20" uuid="ee37457e-0f30-4e99-86e9-8a40512a4916"/>
+				<reportElement x="0" y="355" width="148" height="20" uuid="ee37457e-0f30-4e99-86e9-8a40512a4916"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[( ) Inapto para a função de:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="336" width="192" height="20" uuid="ff4ebdb4-c73b-4fe5-9497-62683cbeea82"/>
+				<reportElement x="0" y="376" width="192" height="20" uuid="ff4ebdb4-c73b-4fe5-9497-62683cbeea82"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<text><![CDATA[( ) com restrição para a função de:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="148" y="315" width="392" height="20" uuid="6f81ec85-2b8a-4a73-9584-f3c2314b9635"/>
+				<reportElement x="148" y="355" width="392" height="20" uuid="6f81ec85-2b8a-4a73-9584-f3c2314b9635"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="192" y="336" width="348" height="20" uuid="1648e7f8-a543-42b8-9cec-aa08160cbfb1"/>
+				<reportElement x="192" y="376" width="348" height="20" uuid="1648e7f8-a543-42b8-9cec-aa08160cbfb1"/>
 				<textElement>
 					<font fontName="SansSerif" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{funcao}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="363" width="192" height="20" uuid="20303a4c-40a7-4e87-8f82-823656baa63d"/>
+				<reportElement x="0" y="418" width="192" height="20" uuid="20303a4c-40a7-4e87-8f82-823656baa63d"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Agentes Agressores:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="491" width="192" height="20" uuid="036f77b7-22b8-4989-9d97-5a856fe262aa"/>
+				<reportElement x="0" y="523" width="192" height="20" uuid="036f77b7-22b8-4989-9d97-5a856fe262aa"/>
 				<textElement>
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Exames Complementares:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="511" width="555" height="132" uuid="eaeae3ba-0635-41ec-9516-e1cc5e75ef12"/>
+				<reportElement x="0" y="543" width="555" height="85" uuid="eaeae3ba-0635-41ec-9516-e1cc5e75ef12"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{exames}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="383" width="555" height="108" uuid="89ea707a-7b7c-4225-bd2c-9835f227eca7"/>
+				<reportElement x="0" y="438" width="555" height="85" uuid="89ea707a-7b7c-4225-bd2c-9835f227eca7"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
