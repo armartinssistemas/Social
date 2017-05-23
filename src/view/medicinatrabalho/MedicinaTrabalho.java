@@ -6,6 +6,7 @@
 package view.medicinatrabalho;
 
 import dao.DaoFornecedorCana;
+import dao.DaoModeloExames;
 import dao.DaoPaciente;
 import dao.medicinatrabalho.DaoGuiMedicinaTrabalho;
 import dao.medicinatrabalho.DaoTipoMedicinaTrabalho;
@@ -33,6 +34,7 @@ import model.FornecedorCana;
 import model.Paciente;
 import model.medicinatrabalho.ExameComplementar;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
+import model.medicinatrabalho.Modeloexames;
 import model.medicinatrabalho.TipoMedicinaTrabalho;
 import model.recolhimento.RecolhimentoDiario;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -61,6 +63,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     
     private DaoTipoMedicinaTrabalho daoTipoMedicinaTrabalho;
     private DaoGuiMedicinaTrabalho daoGuiMedicinaTrabalho;
+    private DaoModeloExames daoModeloExames;
     private DaoPaciente daoPaciente;
     private DaoFornecedorCana daoFornecedorCana;
     
@@ -91,12 +94,15 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         params.put("serie",guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho()==null?"":guiaMedicinaTrabalho.getPaciente().getSerieCateiraTrabalho());
         params.put("funcao",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador()==null?"":guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getDescricao());
         
-        if (guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getId().toString().equals("4") ||
-            guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getId().toString().equals("6") ||
-            guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getId().toString().equals("8")){
-            params.put("agentesagressores",guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores()==null?"": guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getAgagressores());
+        Long idCargo = guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getId();
+        Long idTipoMedicina = guiaMedicinaTrabalho.getTipoMedicinaTrabalho().getId();
+        
+        Modeloexames modeloexames = daoModeloExames.
+                getByCargoTipoMedicinaTrabalho(idCargo, idTipoMedicina);
+        if (modeloexames!=null){
+            params.put("agentesagressores",modeloexames.getAgentesAgressores()==null?"": modeloexames.getAgentesAgressores());
             String exames = "";
-            for(ExameComplementar e: guiaMedicinaTrabalho.getPaciente().getFuncaoTrabalhador().getExamesComplementares()){
+            for(ExameComplementar e: modeloexames.getExamesComplementares()){
                 if (!exames.equals(""))
                     exames+="    |    "+e.getDescricao();
                 else
@@ -105,11 +111,10 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             params.put("exames",exames);
         }else{
             params.put("agentesagressores","");
-            params.put("exames","");
-        }
+        }   params.put("exames","");
 
         GeraRelatorio geraRelatorio = new GeraRelatorio();
-        geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");        
+        geraRelatorio.gerarRelatorio(params, "Guia de Medicina do Trabalho (ASO)", "/relatorios/medicinatrabalho/guia.jasper");
     }
     
     public void buscaPaciente(Paciente p){
@@ -190,7 +195,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         //TextID.setText("");
         TextData.setDate(null);
         TextAMBULATORIO.setText("");
-        TextTipoMedicina.setSelectedIndex(0);
+        TextTipoMedicina.setSelectedItem(null);
         limparPaciente();
         TextIDPACIENTE.setText("");
     }
@@ -258,7 +263,9 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                          m.getId().toString(),
                          m.getData()!=null?sdf.format(m.getData()):"",
                          m.getAmbulatorio().getDescricao()!=null?m.getAmbulatorio().getDescricao():"", 
-                         m.getPaciente()!=null && m.getPaciente().getNome()!=null?m.getPaciente().getNome():""});
+                         m.getPaciente()!=null && m.getPaciente().getNome()!=null?m.getPaciente().getNome():"",
+                         m.getTipoMedicinaTrabalho()!=null && m.getTipoMedicinaTrabalho().getDescricao()!=null?m.getTipoMedicinaTrabalho().getDescricao():""});
+                         
                  }
                  //tableBusca = new JTable(tableModel);
             }
@@ -278,6 +285,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
             daoTipoMedicinaTrabalho = new DaoTipoMedicinaTrabalho();
             daoGuiMedicinaTrabalho = new DaoGuiMedicinaTrabalho();
             daoFornecedorCana = new DaoFornecedorCana();
+            daoModeloExames = new DaoModeloExames();
             //Carrega a lista de tipo de medicina do trabalho
             List<TipoMedicinaTrabalho> tipos = daoTipoMedicinaTrabalho.listar();
             //Ordena em Ordem Alfabética
@@ -404,10 +412,10 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jLabel7.setText("PACIENTE");
 
         TextIDPACIENTE.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 TextIDPACIENTEInputMethodTextChanged(evt);
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         TextIDPACIENTE.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -816,11 +824,11 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Data", "Ambulatório", "Paciente"
+                "ID", "Data", "Ambulatório", "Paciente", "Tipo Medicina Trabalho"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1071,6 +1079,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 imprimeRelatorio(false);
             }catch(Exception ex){
                 JOptionPane.showMessageDialog(null, "Problema de conexão!");
+                ex.printStackTrace();
             }
         }else{
             JOptionPane.showMessageDialog(null, "Escolhe uma guia para ser impressa!");

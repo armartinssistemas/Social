@@ -22,8 +22,8 @@ public class ExameComplementar implements Comparable<ExameComplementar> {
     private String descricao;
     
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "examesComplementares")
-    private List<FuncaoTrabalhador> funcoesTrabalhadores = new ArrayList<>();
-
+    private List<Modeloexames> modeloexameses = new ArrayList<>();    
+    
     public Long getId() {
         return id;
     }
@@ -39,15 +39,7 @@ public class ExameComplementar implements Comparable<ExameComplementar> {
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
-    public List<FuncaoTrabalhador> getFuncoesTrabalhadores() {
-        return funcoesTrabalhadores;
-    }
-
-    public void setFuncoesTrabalhadores(List<FuncaoTrabalhador> funcoesTrabalhadores) {
-        this.funcoesTrabalhadores = funcoesTrabalhadores;
-    }
-
+    
     @Override
     public int compareTo(ExameComplementar o) {
         return this.descricao.compareTo(o.getDescricao());
@@ -82,6 +74,12 @@ public class ExameComplementar implements Comparable<ExameComplementar> {
         }
         return true;
     }
-    
-    
+
+    public List<Modeloexames> getModeloexameses() {
+        return modeloexameses;
+    }
+
+    public void setModeloexameses(List<Modeloexames> modeloexameses) {
+        this.modeloexameses = modeloexameses;
+    }
 }

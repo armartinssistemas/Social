@@ -31,8 +31,6 @@ public class FuncaoTrabalhador implements Comparable<FuncaoTrabalhador>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    private String agagressores;
    
     @Column(length = 50)
     private String descricao;
@@ -40,18 +38,6 @@ public class FuncaoTrabalhador implements Comparable<FuncaoTrabalhador>{
     @OneToMany(mappedBy = "funcaoTrabalhador")
     private List<Paciente> pacientes = new ArrayList<Paciente>();
     
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
-    @JoinTable(name = "medicinatrabalho_cargo_examecomplementar", catalog = "TEOR", 
-            joinColumns = { 
-                    @JoinColumn(name = "idcargo", nullable = false, updatable = false) 
-            },        
-            inverseJoinColumns = { 
-                @JoinColumn(name = "idexamecomplementar", 
-                                    nullable = false, updatable = false) 
-            }
-    )
-    private List<ExameComplementar> examesComplementares = new ArrayList<>();
-
     public Long getId() {
         return id;
     }
@@ -84,21 +70,5 @@ public class FuncaoTrabalhador implements Comparable<FuncaoTrabalhador>{
     @Override
     public String toString() {
         return this.descricao;
-    }
-
-    public String getAgagressores() {
-        return agagressores;
-    }
-
-    public void setAgagressores(String agagressores) {
-        this.agagressores = agagressores;
-    }
-
-    public List<ExameComplementar> getExamesComplementares() {
-        return examesComplementares;
-    }
-
-    public void setExamesComplementares(List<ExameComplementar> examesComplementares) {
-        this.examesComplementares = examesComplementares;
     }
 }

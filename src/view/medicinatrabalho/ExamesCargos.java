@@ -6,7 +6,9 @@
 package view.medicinatrabalho;
 
 import dao.DaoFuncaoTrabalhador;
+import dao.DaoModeloExames;
 import dao.medicinatrabalho.DaoExameComplementar;
+import dao.medicinatrabalho.DaoTipoMedicinaTrabalho;
 import java.util.ArrayList;
 import model.medicinatrabalho.ExameComplementar;
 import java.util.Collection;
@@ -18,6 +20,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.FuncaoTrabalhador;
+import model.medicinatrabalho.Modeloexames;
+import model.medicinatrabalho.TipoMedicinaTrabalho;
 
 /**
  *
@@ -29,14 +33,54 @@ public class ExamesCargos extends javax.swing.JFrame {
      * Creates new form ExamesCargos
      */
     private DaoFuncaoTrabalhador daoFuncaoTrabalhador;
+    private DaoTipoMedicinaTrabalho daoTipoMedicinaTrabalho;
+    private DaoModeloExames daoModeloExames;
     
     private List<Long> adicionados = new ArrayList<>();
     private List<Long> excluidos = new ArrayList<>();
+    
+    public void abrirExames(){
+if (TextFuncoes.getSelectedItem()!=null &&
+            TextTipoMedicinaTrabalho.getSelectedItem()!=null){
+            try{
+                TextAgentesAgressores.setText("");
+                
+                DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
+                tableModel.setNumRows(0);
+                    
+                adicionados.clear();
+                
+                FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
+                TipoMedicinaTrabalho tipoMedicinaTrabalho = (TipoMedicinaTrabalho) TextTipoMedicinaTrabalho.getSelectedItem();
+                Modeloexames modeloexames = daoModeloExames.getByCargoTipoMedicinaTrabalho(funcaoTrabalhador.getId(), tipoMedicinaTrabalho.getId());
+                
+                if (modeloexames!=null){
+                    TabelaExameComplementar.getColumnModel().getColumn(0).setPreferredWidth(10);
+                    List<ExameComplementar> lista = modeloexames.getExamesComplementares();
+                    Collections.sort(lista);
+                    for(ExameComplementar e: modeloexames.getExamesComplementares()){
+                         tableModel.addRow(new String[]{
+                                 e.getId().toString(),
+                                 e.getDescricao()});
+                    }
+
+                    TextAgentesAgressores.setText(modeloexames.getAgentesAgressores()==null?"":modeloexames.getAgentesAgressores());
+                }
+            }catch(Exception ex){
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Problema de Conexão!");
+            }
+        }else{
+            TextAgentesAgressores.setText("");
+        }        
+    }
     
     public ExamesCargos() {
         initComponents();
         
         try{
+            daoModeloExames = new DaoModeloExames();
+            
             daoFuncaoTrabalhador = new DaoFuncaoTrabalhador();
             //Busca a listas
             List<FuncaoTrabalhador> lista = daoFuncaoTrabalhador.listar();
@@ -52,6 +96,17 @@ public class ExamesCargos extends javax.swing.JFrame {
             Collections.sort(listaExame);
             listaExame.add(0,null);
             TextListaExameComplementar.setModel(new DefaultComboBoxModel(listaExame.toArray()));
+            
+            
+            daoTipoMedicinaTrabalho = new DaoTipoMedicinaTrabalho();
+            //Busca a listas
+            List<TipoMedicinaTrabalho> listaTipoMedicina = daoTipoMedicinaTrabalho.listar();
+            //Ordena a lista
+            Collections.sort(listaTipoMedicina);
+            //Adiciona item vazio no primeiro item
+            listaTipoMedicina.add(0, null);
+            //Adiciona lista no campo de texto
+            TextTipoMedicinaTrabalho.setModel(new DefaultComboBoxModel(listaTipoMedicina.toArray()));            
         }catch(Exception ex){
             JOptionPane.showMessageDialog(null, "Problem de conexão");
         }
@@ -81,6 +136,9 @@ public class ExamesCargos extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btIncluirExameComplementar = new javax.swing.JButton();
         btExcluir = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        TextTipoMedicinaTrabalho = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Exames Complementares");
@@ -152,6 +210,21 @@ public class ExamesCargos extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setText("Tipo Medicina Trabalho");
+
+        TextTipoMedicinaTrabalho.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                TextTipoMedicinaTrabalhoItemStateChanged(evt);
+            }
+        });
+
+        jButton1.setText("Remover");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -160,19 +233,10 @@ public class ExamesCargos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(brSalvar))
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TextFuncoes, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabel2))
                             .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,36 +245,54 @@ public class ExamesCargos extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btIncluirExameComplementar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(btExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel2))
+                            .addComponent(jLabel5)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(TextTipoMedicinaTrabalho, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(TextFuncoes, javax.swing.GroupLayout.Alignment.LEADING, 0, 362, Short.MAX_VALUE)))
+                        .addGap(0, 180, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(brSalvar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(TextFuncoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(3, 3, 3)
+                .addComponent(TextTipoMedicinaTrabalho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(20, 20, 20)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TextListaExameComplementar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btIncluirExameComplementar)
                     .addComponent(btExcluir))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(brSalvar)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -232,18 +314,35 @@ public class ExamesCargos extends javax.swing.JFrame {
     private void brSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brSalvarActionPerformed
         if (TextFuncoes.getSelectedItem()!=null){
             try{
+                boolean novo = false;
+                
                 FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
-                funcaoTrabalhador.setAgagressores(TextAgentesAgressores.getText());
+                TipoMedicinaTrabalho tipoMedicinaTrabalho = (TipoMedicinaTrabalho) TextTipoMedicinaTrabalho.getSelectedItem();
+                Modeloexames modelo = daoModeloExames.getByCargoTipoMedicinaTrabalho(funcaoTrabalhador.getId(), tipoMedicinaTrabalho.getId());
+                
+                if (modelo == null){ 
+                    modelo = new Modeloexames();
+                    modelo.setTipoMedicinaTrabalho(tipoMedicinaTrabalho);
+                    modelo.setCargo(funcaoTrabalhador);
+                    novo = true;
+                }
+                modelo.setAgentesAgressores(TextAgentesAgressores.getText());
+                
                 for(Long Id: excluidos){
-                    funcaoTrabalhador.getExamesComplementares().remove(new DaoExameComplementar().getById(Id));
+                    modelo.getExamesComplementares().remove(new DaoExameComplementar().getById(Id));
                 }
                 
                 for(Long Id: adicionados){
                     ExameComplementar e = new DaoExameComplementar().getById(Id);
-                    if (!funcaoTrabalhador.getExamesComplementares().contains(e))
-                        funcaoTrabalhador.getExamesComplementares().add(e);
+                    if (!modelo.getExamesComplementares().contains(e)){
+                        modelo.getExamesComplementares().add(e);             
+                    }
                 }
-                daoFuncaoTrabalhador.update(funcaoTrabalhador);
+                if (novo)
+                    daoModeloExames.insert(modelo);
+                else
+                    daoModeloExames.update(modelo);
+                
                 JOptionPane.showMessageDialog(null, "Registro salvo");
             }catch(Exception ex){
                 ex.printStackTrace();
@@ -257,6 +356,7 @@ public class ExamesCargos extends javax.swing.JFrame {
             if(TextFuncoes.getSelectedItem()!=null){
                 TextAgentesAgressores.setText("");
                 TextListaExameComplementar.setSelectedItem(null);
+                TextTipoMedicinaTrabalho.setSelectedItem(null);
                 TextFuncoes.setSelectedItem(null);
 
                 DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
@@ -269,29 +369,10 @@ public class ExamesCargos extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void TextFuncoesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_TextFuncoesItemStateChanged
-        if (TextFuncoes.getSelectedItem()!=null){
-            try{
-                adicionados.clear();
-                FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
-                DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
-                tableModel.setNumRows(0);
-                TabelaExameComplementar.getColumnModel().getColumn(0).setPreferredWidth(10);
-                List<ExameComplementar> lista = funcaoTrabalhador.getExamesComplementares();
-                Collections.sort(lista);
-                for(ExameComplementar e: funcaoTrabalhador.getExamesComplementares()){
-                     tableModel.addRow(new String[]{
-                             e.getId().toString(),
-                             e.getDescricao()});
-                }
-
-                TextAgentesAgressores.setText(funcaoTrabalhador.getAgagressores()==null?"":funcaoTrabalhador.getAgagressores());
-            }catch(Exception ex){
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Problema de Conexão!");
-            }
-        }else{
-            TextAgentesAgressores.setText("");
-        }
+        TextAgentesAgressores.setText("");
+        DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
+        tableModel.setNumRows(0);
+        abrirExames();
     }//GEN-LAST:event_TextFuncoesItemStateChanged
 
     private void btIncluirExameComplementarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIncluirExameComplementarActionPerformed
@@ -328,6 +409,37 @@ public class ExamesCargos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Problema de Conexão!");
         }
     }//GEN-LAST:event_btExcluirActionPerformed
+
+    private void TextTipoMedicinaTrabalhoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_TextTipoMedicinaTrabalhoItemStateChanged
+                                 
+        TextAgentesAgressores.setText("");
+        DefaultTableModel tableModel = (DefaultTableModel) TabelaExameComplementar.getModel();
+        tableModel.setNumRows(0);
+        abrirExames();
+    }//GEN-LAST:event_TextTipoMedicinaTrabalhoItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        TipoMedicinaTrabalho tipoMedicinaTrabalho = (TipoMedicinaTrabalho) TextTipoMedicinaTrabalho.getSelectedItem();
+        FuncaoTrabalhador funcaoTrabalhador = (FuncaoTrabalhador) TextFuncoes.getSelectedItem();
+        
+        if (tipoMedicinaTrabalho!=null && funcaoTrabalhador!=null){
+            try {
+                DaoModeloExames daoModeloExames = new DaoModeloExames();
+                Modeloexames modeloexames = daoModeloExames.getByCargoTipoMedicinaTrabalho(funcaoTrabalhador.getId(), tipoMedicinaTrabalho.getId());
+                if (modeloexames !=null){
+                    daoModeloExames.delete(modeloexames);
+                }
+                TextTipoMedicinaTrabalho.setSelectedItem(null);
+                TextFuncoes.setSelectedItem(null);
+                TextAgentesAgressores.setText("");
+                JOptionPane.showMessageDialog(null, "Modelo excluído com sucesso!");
+            } catch (Exception ex) {
+                Logger.getLogger(ExamesCargos.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Poblema de conexão!");
+            }
+            
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -369,14 +481,17 @@ public class ExamesCargos extends javax.swing.JFrame {
     private javax.swing.JTextArea TextAgentesAgressores;
     private javax.swing.JComboBox<String> TextFuncoes;
     private javax.swing.JComboBox<String> TextListaExameComplementar;
+    private javax.swing.JComboBox<String> TextTipoMedicinaTrabalho;
     private javax.swing.JButton brSalvar;
     private javax.swing.JButton btExcluir;
     private javax.swing.JButton btIncluirExameComplementar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;

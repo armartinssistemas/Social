@@ -15,6 +15,7 @@ import model.FuncaoTrabalhador;
 import model.Paciente;
 import model.Titular;
 import model.medicinatrabalho.GuiaMedicinaTrabalho;
+import model.medicinatrabalho.Modeloexames;
 import model.medicinatrabalho.TipoMedicinaTrabalho;
 import model.permissao.Usuario;
 import model.recolhimento.RecolhimentoDiario;
@@ -30,18 +31,6 @@ import org.hibernate.SessionFactory;
 public class HibernateUtil {
 
     private static SessionFactory sessionFactory;
-    
-    /*static {
-        try {
-            // Create the SessionFactory from standard (hibernate.cfg.xml) 
-            // config file.
-            sessionFactory = new AnnotationConfiguration().configure().buildSessionFactory();
-        } catch (Throwable ex) {
-            // Log the exception. 
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }*/
     
     public static SessionFactory getSessionFactory() throws Exception{
         //return sessionFactory;
@@ -60,6 +49,7 @@ public class HibernateUtil {
                 ac.addAnnotatedClass(Cidade.class);
                 ac.addAnnotatedClass(RecolhimentoDiario.class);
                 ac.addAnnotatedClass(ExameComplementar.class);
+                ac.addAnnotatedClass(Modeloexames.class);
                 
                 sessionFactory = ac.configure().buildSessionFactory();
             }catch(Exception ex){

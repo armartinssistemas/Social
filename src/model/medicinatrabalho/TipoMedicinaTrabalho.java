@@ -6,6 +6,7 @@
 package model.medicinatrabalho;
 
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,6 +32,9 @@ public class TipoMedicinaTrabalho implements Comparable<TipoMedicinaTrabalho>{
     @OneToMany(mappedBy = "tipoMedicinaTrabalho")
     private List<GuiaMedicinaTrabalho> guiasMedicinaTrabalho;
 
+    @OneToMany(mappedBy = "tipoMedicinaTrabalho")
+    private List<Modeloexames> modeloexames;
+    
     public Long getId() {
         return id;
     }
@@ -63,6 +67,39 @@ public class TipoMedicinaTrabalho implements Comparable<TipoMedicinaTrabalho>{
     @Override
     public int compareTo(TipoMedicinaTrabalho o) {
         return this.descricao.compareTo(o.getDescricao());
+    }
+
+    public List<Modeloexames> getModeloexames() {
+        return modeloexames;
+    }
+
+    public void setModeloexames(List<Modeloexames> modeloexames) {
+        this.modeloexames = modeloexames;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TipoMedicinaTrabalho other = (TipoMedicinaTrabalho) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     
     
