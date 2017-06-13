@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Paciente;
@@ -25,9 +26,9 @@ public class PesquisaPaciente extends javax.swing.JDialog {
      */
     private static Paciente pacienteSelecionado;
     private DaoPaciente daoPaciente;
-    
-    public static Paciente buscaPaciente(JFrame parent){
-        PesquisaPaciente pesquisaPaciente = new PesquisaPaciente(parent, true);
+  
+    public static Paciente buscaPaciente(){
+        PesquisaPaciente pesquisaPaciente = new PesquisaPaciente(null, true);
         pesquisaPaciente.show();
         return pacienteSelecionado;
     }

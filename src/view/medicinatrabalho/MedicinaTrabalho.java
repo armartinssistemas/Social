@@ -55,7 +55,7 @@ import view.paciente.PesquisaPaciente;
  *
  * @author Ronaldo
  */
-public class MedicinaTrabalho extends javax.swing.JFrame {
+public class MedicinaTrabalho extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form MedicinaTrabalho
@@ -125,24 +125,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(null, "Paciente não encontrado");
         }
-        
-        //Código responsável por verificar se existe recolhimento para fornecedor
-        /*try{
-            RecolhimentoDiario recolhimentoDiario = daoRecolhimentoDiario.getByIDFornecedor(p.getFornecedorCana().getIDFornecedor());
-            if (recolhimentoDiario != null && recolhimentoDiario.autorizaAtendimento()){
-                barraProgracao.setMaximum(recolhimentoDiario.getMaxUsoRecolhimento());
-                barraProgracao.setMinimum(0);
-                int porcentagem = recolhimentoDiario.getPorcentagemUso();
-                barraProgracao.setValue(porcentagem);
-                LabelStatus.setText("Status: "+recolhimentoDiario.getMenssagemStatus());
-            }else{
-                limparPaciente();
-                TextIDPACIENTE.setText("");
-                JOptionPane.showMessageDialog(null, "Fornecedor "+p.getFornecedorCana().getNome()+" não possui recolhimento!");
-            }
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "Problema de conectividade!");
-        }*/
     }
     
     public void modoNaoEdicao(){
@@ -364,9 +346,10 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableBusca = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Guia de Medicina do Trabalho");
         setBackground(new java.awt.Color(255, 255, 255));
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Guia de Medicina do Trabalho");
         setFont(new java.awt.Font("Aharoni", 0, 10)); // NOI18N
 
         panelTab.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -908,7 +891,6 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
@@ -1021,7 +1003,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
                 }
             }
         }else if(evt.getKeyCode() == evt.VK_F2) {
-            Paciente p = PesquisaPaciente.buscaPaciente(this);
+            Paciente p = PesquisaPaciente.buscaPaciente();
             if (p!=null){
                 buscaPaciente(p);
             }
@@ -1082,7 +1064,7 @@ public class MedicinaTrabalho extends javax.swing.JFrame {
     }//GEN-LAST:event_tableBuscaMouseClicked
 
     private void btPesqPacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btPesqPacienteActionPerformed
-        Paciente p = PesquisaPaciente.buscaPaciente(this);
+        Paciente p = PesquisaPaciente.buscaPaciente();
         if (p!=null){
             buscaPaciente(p);
         }

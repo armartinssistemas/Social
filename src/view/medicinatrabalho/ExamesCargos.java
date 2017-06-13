@@ -27,7 +27,7 @@ import model.medicinatrabalho.TipoMedicinaTrabalho;
  *
  * @author Ronaldo
  */
-public class ExamesCargos extends javax.swing.JFrame {
+public class ExamesCargos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form ExamesCargos
@@ -140,7 +140,8 @@ if (TextFuncoes.getSelectedItem()!=null &&
         TextTipoMedicinaTrabalho = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exames Complementares");
 
         jPanel1.setBackground(new java.awt.Color(206, 234, 255));
@@ -308,7 +309,6 @@ if (TextFuncoes.getSelectedItem()!=null &&
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void brSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brSalvarActionPerformed

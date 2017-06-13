@@ -14,6 +14,8 @@ import view.medicinatrabalho.MedicinaTrabalho;
  */
 public class Principal extends javax.swing.JFrame {
 
+    private MedicinaTrabalho medicinaTrabalho;
+    private ExamesCargos examesCargos;
     /**
      * Creates new form Principal
      */
@@ -38,6 +40,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
+        jDesktopPane = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -64,15 +67,28 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(206, 234, 255));
 
+        jDesktopPane.setBackground(new java.awt.Color(206, 234, 255));
+
+        javax.swing.GroupLayout jDesktopPaneLayout = new javax.swing.GroupLayout(jDesktopPane);
+        jDesktopPane.setLayout(jDesktopPaneLayout);
+        jDesktopPaneLayout.setHorizontalGroup(
+            jDesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDesktopPaneLayout.setVerticalGroup(
+            jDesktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 279, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jDesktopPane)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addComponent(jDesktopPane)
         );
 
         jMenuBar1.setBackground(new java.awt.Color(0, 204, 204));
@@ -115,19 +131,24 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        MedicinaTrabalho m = new MedicinaTrabalho();
-        m.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        m.setVisible(true);
+        if (medicinaTrabalho == null || !medicinaTrabalho.isVisible()){
+            medicinaTrabalho = new MedicinaTrabalho();
+            medicinaTrabalho.setVisible(true);
+            jDesktopPane.add(medicinaTrabalho);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        ExamesCargos examesCargos = new ExamesCargos();
-        examesCargos.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        examesCargos.setVisible(true);
+        if (examesCargos == null || !examesCargos.isVisible()){
+            examesCargos = new ExamesCargos();
+            examesCargos.setVisible(true);
+            jDesktopPane.add(examesCargos);
+        }
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane jDesktopPane;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
